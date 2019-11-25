@@ -1,3 +1,5 @@
-export interface Props {
-    text: string
-}
+export {Category, AddCategoryAction} from './category'
+export {Props} from './props'
+export {Poem} from './poem'
+export {ApiPoemsResponse} from './Api-poems-response'
+export {MainStore} from './store'
