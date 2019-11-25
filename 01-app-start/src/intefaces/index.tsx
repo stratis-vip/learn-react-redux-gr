@@ -1,4 +1,4 @@
-export {Category, AddCategoryAction} from './category'
+export {Category, AddCategoryAction, IncCategoryAction} from './category'
 export {Props} from './props'
 export {Poem} from './poem'
 export {ApiPoemsResponse} from './Api-poems-response'
