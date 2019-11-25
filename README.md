@@ -27,6 +27,11 @@
 	- [Εκτέλεση του webpack-dev-server](#Εκτέλεση-του-webpack-dev-server)
 	- [Εκτέλεση των δοκιμών](#Εκτέλεση-των-δοκιμών)
 - [2. Δημιουργία Store και Provider](#2-Δημιουργία-store-και-provider)
+	- [Δομή καταλόγων και θεωρία](#Δομή-καταλόγων-και-θεωρία)
+		- [α. Στατιστικά (κατηγορίες κειμένων και εγγραφές ανά κατηγορία).](#α-Στατιστικά-κατηγορίες-κειμένων-και-εγγραφές-ανά-κατηγορία)
+		- [Actions](#actions)
+		- [Reducers](#reducers)
+		- [Έναρξη του store](#Έναρξη-του-store)
 
 # 1. Προαπαιτούμενα
 ## Δημιουργία καταλόγου
@@ -299,7 +304,126 @@ npm test
 
 Μέχρι εδώ όλα αυτά είναι εντός του καταλόγου 00-starting στο παρόν repository
 
+
 # 2. Δημιουργία Store και Provider
-##	Δομή καταλόγων και θεωρία
+
+## Δομή καταλόγων και θεωρία
+
 Το όλο θέμα με το Redux είναι να υπάρχει ένα γενικό αντικείμενο, το [store](https://redux.js.org/api/store), που κρατά όλες τις πληροφορίες και τα στοιχεία για την εφαρμογή μας.
-Η εφαρμογή που θα δημιουργήσω θα παρουσιάζει τα [κείμενα της συλλογής Χριστοδούλου](http://dbase.texnopraksis.com). 
+
+Η εφαρμογή που θα δημιουργήσω θα παρουσιάζει τα [κείμενα της συλλογής Χριστοδούλου](http://dbase.texnopraksis.com).
+To store λοιπόν στην αρχή έχει τη μορφή:
+```js
+store: {
+	categories: [],
+	
+}
+```
+Διακρίνουμε λοιπόν ότι τα στοιχεία που παρουσιάζει η εφαρμογή είναι:
+### α. Στατιστικά (κατηγορίες κειμένων και εγγραφές ανά κατηγορία). 
+Άρα το αντικείμενο Category είναι της μορφής
+```ts
+// ./src/interfaces/Category.tsx
+interface Category{
+	description: string
+	cc: number
+}
+```
+Οπότε το προσθέτω στον κατάλογο interface το Category. Εντός του καταλόγου υπάρχει το αρχείο index.tsx, το οποίο κάνει export όλα τα interface
+Οι κατηγορίες, έρχονται μέσω του Api στην εξής μορφή:
+```json
+{
+    "status":"success",
+    "code":200,
+    "data":[
+            {"id":1,"description": "[περιγραφή]"},		
+				..........
+            ]
+}
+```
+Οπότε δημιουργώ το  interface ApiPoemsResponse (και τα αντίστοιχα )
+```ts
+interface  ApiPoemsResponse {
+    status: StatusCodes     //enum type
+    code: number
+    data: Array<Poem> | []    //interface Poem
+}
+```
+### Actions
+Προσθέτω τον κατάλογο ./src/actions όπου θα βάζω όλες τις ενέργειες που με ενδιαφέρει να παρακολουθώ. Αρχίζω με την ενέργεια ADD_CATEGORY_INFO η οποία θα καλείται κάθε φορά που θα προσθέτω μια κατηγορία στο store.
+Για να στηρίξω την ενέργεια αυτή απαιτείται να δημιουργήσω τον τύπο της ενέργειας:
+```ts
+export  interface  AddCategoryAction  extends  Action{
+	category:  Category
+}
+```
+και την συνάρτηση δημιουργίας ενεργειών:
+```ts
+const  addCategory  = (category:Category):AddCategoryAction  => ({
+	type:  ADD_CATEGORY_INFO,
+	category
+})
+```
+### Reducers
+Τώρα σειρά έχει ο reducer που θα αναλάβει να βάλει το αποτέλεσμα της ενέργειας στο store. Οπότε στον κατάλογε ./src/reducers δημιουργώ το αρχείο categories.tsx
+```ts
+import { ADD_CATEGORY } from  "../actions/category"
+import { Category, AddCategoryAction } from  "../intefaces/category"
+import { Action } from  "redux"
+
+const  categories  = (state:  Array<Category> = [], action:  Action) => {
+    switch (action.type) {
+        case  ADD_CATEGORY: {
+            let  newState  = [...state, Object.assign({}, (action  as  AddCategoryAction).category)]
+            return  newState
+        }
+        default:
+            return  state
+    }
+}
+
+export  default  categories
+```
+>Reducer είναι επί της ουσίας μια συνάρτηση που παίρνει την παρούσα κατάσταση του store [ή ενός τομέα του μόνο] και επιστρέφει μια νέα κατάσταση ανάλογα με το action που έλαβε σαν μεταβλητή.
+
+Στο αρχείο `./src/reducers/index.tsx` θα βάλουμε και τους λοιπούς reducers, όταν είναι έτοιμοι.
+```jsx
+// ./src/reducers/index.tsx
+
+import {combineReducers} from 'redux'
+import categories from './categories'
+
+const rootReducer = combineReducers(
+    {categories}//, query, pagination, search, dataRes}
+)
+
+export default rootReducer
+```
+### Έναρξη του store
+Για να εισάγουμε λοιπόν το store στην εφαρμογή μας, δημιουργώ το αρχείο ./src/store/index.tsx
+```jsx
+import { createStore } from  'redux'
+import { composeWithDevTools } from  'redux-devtools-extension'
+import  rootReducer  from  '../reducers'
+
+/* χωρίς τα redux devTools. ΔΕΝ ΠΡΟΤΕΙΝΕΤΑΙ
+const  store  =  createStore(rootReducer)
+*/
+const  store  =  createStore(rootReducer, composeWithDevTools()) 
+
+export  default  store
+```
+Το πρόσθετο `redux-devtools-extension` είναι απαραίτητο για να λειτουργήσουν τα redux DevTools.
+Οπότε στην πρώτη κλήση που θα κάνουμε στο store, θα έχουμε την ενεργοποίηση των redux DevTools. Για παράδειγμα:
+```jsx
+/* ./src/app.tsx */
+import  React  from  'react'
+import  ReactDOM  from  'react-dom'
+import  App  from  './components/app'
+import  store  from  './store'
+  
+let  currentState  =  JSON.stringify(store.getState())
+ReactDOM.render(<App  text={currentState}  />, document.getElementById('root'))
+```
+θα έχει ως αποτέλεσμα: 
+![Redux devTools](https://lh3.googleusercontent.com/KcTcngC2Qce0saX4Gz219ucxmF6lM_YPgFdk2qMAiZAAWMIDbUX0L5_rLPf0pVBLxBgO3TyTfNpEBA "Redux devTools")

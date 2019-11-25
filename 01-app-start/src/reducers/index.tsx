@@ -1,3 +1,5 @@
+// ./src/reducers/index.tsx
+
 import {combineReducers} from 'redux'
 import categories from './categories'
 // import query from './query'
