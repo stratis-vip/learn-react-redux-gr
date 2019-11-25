@@ -29,6 +29,7 @@
 - [2. Δημιουργία Store και Provider](#2-Δημιουργία-store-και-provider)
 	- [Δομή καταλόγων και θεωρία](#Δομή-καταλόγων-και-θεωρία)
 		- [α. Στατιστικά (κατηγορίες κειμένων και εγγραφές ανά κατηγορία).](#α-Στατιστικά-κατηγορίες-κειμένων-και-εγγραφές-ανά-κατηγορία)
+		- [β. Στοιχεία αναζήτησης και φίλτρα](#β-Στοιχεία-αναζήτησης-και-φίλτρα)
 		- [Actions](#actions)
 		- [Reducers](#reducers)
 		- [Έναρξη του store](#Έναρξη-του-store)
@@ -186,7 +187,7 @@ module.exports  = {
 όπου το "build" είναι για  τη δημιουργία της τελικής έκδοσης, το "start" για την εκκίνηση του live server και το "test" για την εκτέλεση των δοκιμών
 
 ### Jest: [jest.config.js](https://jestjs.io/docs/en/configuration)
-H bibliou;hkh jest εκτελείται σε αρχεία js.  Για να εκτελείται απ' ευθείας στα αρχεία ts, tsx πρέπει να δώσουμε τις οδηγίες μέσω του αρχείου jest.config.js στον πηγαίο κατάλογο, όπως παρακάτω:
+H βιβλιοθήκη jest εκτελείται σε αρχεία js.  Για να εκτελείται απ' ευθείας στα αρχεία ts, tsx πρέπει να δώσουμε τις οδηγίες μέσω του αρχείου jest.config.js στον πηγαίο κατάλογο, όπως παρακάτω:
 ```js
 /* ./jest.config.js */
 module.exports  = {
@@ -251,28 +252,28 @@ export  default  App
 ### ./src/components/app.test.tsx
 Τα αρχεία δοκιμών ελέγχουν τα περιεχόμενα σε ένα αρχείο. Το όνομα δίνεται ως εξής [αρχείο].test.tsx
 ```jsx
-import  React  from  'react';
-import { render, unmountComponentAtNode } from  'react-dom';
-import  App  from  './app';  
+import  React  from  'react'
+import { render, unmountComponentAtNode } from  'react-dom'
+import  App  from  './app'  
 
-let  container  =  null;
+let  container  =  null
 beforeEach(() => {
 	// setup a DOM element as a render target
-	container  =  document.createElement("div");
-	document.body.appendChild(container);
-});
+	container  =  document.createElement("div")
+	document.body.appendChild(container)
+})
 
 afterEach(() => {
 	// cleanup on exiting
-	unmountComponentAtNode(container);
-	container.remove();
-	container  =  null;
-});
+	unmountComponentAtNode(container)
+	container.remove()
+	container  =  null
+})
   
 it('Δημιουργείται κανονικά', () => {
 	const  stringText  =  "Δοκιμαστικό component"
-	render(<App  text={stringText}/>, container);
-	expect(container.textContent).toBe(stringText);
+	render(<App  text={stringText}/>, container)
+	expect(container.textContent).toBe(stringText)
 })
 ```
 
@@ -316,6 +317,7 @@ To store λοιπόν στην αρχή έχει τη μορφή:
 ```js
 store: {
 	categories: [],
+	queries: Query,
 	
 }
 ```
@@ -329,7 +331,24 @@ interface Category{
 	cc: number
 }
 ```
-Οπότε το προσθέτω στον κατάλογο interface το Category. Εντός του καταλόγου υπάρχει το αρχείο index.tsx, το οποίο κάνει export όλα τα interface
+### β. Στοιχεία αναζήτησης και φίλτρα 
+Άρα το αντικείμενο Query είναι της μορφής
+```ts
+// ./src/interfaces/query.tsx
+interface Query {
+    filters: Filters
+    type: string
+    what: Array<string>
+    from: Array<string>
+    where: Array<string>
+    order: Array<string>
+    sort: Array<string>
+    offset: number
+    limit: number
+}
+}
+```
+Οπότε τα προσθέτω στον κατάλογο interface. Εντός του καταλόγου υπάρχει το αρχείο index.tsx, το οποίο κάνει export όλα τα interface
 Οι κατηγορίες, έρχονται μέσω του Api στην εξής μορφή:
 ```json
 {

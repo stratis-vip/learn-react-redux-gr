@@ -1,20 +1,20 @@
-import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import App from './app';
+import React from 'react'
+import { render, unmountComponentAtNode } from 'react-dom'
+import App from './app'
 
-let container = null;
+let container = null
 beforeEach(() => {
   // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
+  container = document.createElement("div")
+  document.body.appendChild(container)
+})
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
+  unmountComponentAtNode(container)
+  container.remove()
+  container = null
+})
 
 
 it('Δημιουργείται κανονικά', () => {

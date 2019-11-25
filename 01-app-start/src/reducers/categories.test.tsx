@@ -3,24 +3,21 @@ import { Category } from "../intefaces"
 import { createStore } from "redux"
 import { addCategory, incCategory, resetCategories } from "../actions/category"
 
-function initStore() {
-    const store = createStore(rootReducer)
-    return store
-}
+let store = null
+const initStore = () => createStore(rootReducer)
+beforeEach(() => store = initStore())
 
 test("Store must exists", () => {
-    let store = initStore()
     expect(store).not.toBe(null)
     const state = store.getState()
     expect((state.categories as Array<Category>)).toStrictEqual([])
-    // expect(state.query.filters.cat).toBe(0)
-    // expect(state.query.what).toStrictEqual([])
+    expect(state.query.filters.cat).toBe(0)
+    expect(state.query.what).toStrictEqual([])
     // expect(state.pagination.page).toBe(1)
 })
 
 describe("Categories Test", () => {
     it("Add one Category", () => {
-        let store = initStore()
         store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
         const category = store.getState().categories[0]
         expect(category.id).toBe(1)
@@ -29,7 +26,6 @@ describe("Categories Test", () => {
     })
 
     it("Add two Categories", () => {
-        let store = initStore()
         store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
         store.dispatch(
             addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
@@ -44,7 +40,6 @@ describe("Categories Test", () => {
     })
 
     it("Increase Category cc", () => {
-        let store = initStore()
         store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
         store.dispatch(
             addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
@@ -61,7 +56,6 @@ describe("Categories Test", () => {
     })
 
     it("Reset", () => {
-        let store = initStore()
         store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
         store.dispatch(
             addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
