@@ -1,8 +1,3 @@
-import {Poem} from './poem'
-import {StatusCodes} from './status-code'
+import { Poem, Data } from '.'
 
-export interface ApiPoemsResponse {
-    status: StatusCodes
-    code: number
-    data: Array<Poem> | []
-}
+export type ApiPoemsResponse = Data<Array<Poem>>
