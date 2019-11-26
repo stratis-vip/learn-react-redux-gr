@@ -5,12 +5,12 @@ import categories from './categories'
 import query from './query'
 import { MainStore } from '../intefaces'
 // import pagination from './pagination'
-// import search from './search'
+import search from './search'
 // import dataRes from './data'
 
 
 const rootReducer:Reducer<MainStore> = combineReducers(
-    {categories, query}//, pagination, search, dataRes}
+    {categories, query, search}//, pagination, search, dataRes}
 )
 
 export default rootReducer
