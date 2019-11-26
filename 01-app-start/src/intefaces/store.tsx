@@ -1,5 +1,7 @@
-import { Category } from "./category"
+import { Category } from "."
+import { Query } from ".";
 
 export interface MainStore {
     categories: Array<Category> | []
+    query: Query
 }
