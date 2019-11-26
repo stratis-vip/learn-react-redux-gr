@@ -26,13 +26,15 @@
 	- [Δημιουργία τοπικού αποθετηρίου (git repository)](#Δημιουργία-τοπικού-αποθετηρίου-git-repository)
 	- [Εκτέλεση του webpack-dev-server](#Εκτέλεση-του-webpack-dev-server)
 	- [Εκτέλεση των δοκιμών](#Εκτέλεση-των-δοκιμών)
-- [2. Δημιουργία Store και Provider](#2-Δημιουργία-store-και-provider)
+- [2. Δημιουργία Store](#2-Δημιουργία-store)
 	- [Δομή καταλόγων και θεωρία](#Δομή-καταλόγων-και-θεωρία)
 		- [α. Στατιστικά (κατηγορίες κειμένων και εγγραφές ανά κατηγορία).](#α-Στατιστικά-κατηγορίες-κειμένων-και-εγγραφές-ανά-κατηγορία)
 		- [β. Στοιχεία αναζήτησης και φίλτρα](#β-Στοιχεία-αναζήτησης-και-φίλτρα)
 		- [Actions](#actions)
 		- [Reducers](#reducers)
 		- [Έναρξη του store](#Έναρξη-του-store)
+- [3. Δημιουργία Provider και Components](#3-Δημιουργία-provider-και-components)
+	- [Βάζω το προαπαιτούμενο για τον Provider στο αρχείο app.tsx](#Βάζω-το-προαπαιτούμενο-για-τον-provider-στο-αρχείο-apptsx)
 
 # 1. Προαπαιτούμενα
 ## Δημιουργία καταλόγου
@@ -306,7 +308,7 @@ npm test
 Μέχρι εδώ όλα αυτά είναι εντός του καταλόγου 00-starting στο παρόν repository
 
 
-# 2. Δημιουργία Store και Provider
+# 2. Δημιουργία Store
 
 ## Δομή καταλόγων και θεωρία
 
@@ -446,3 +448,25 @@ ReactDOM.render(<App  text={currentState}  />, document.getElementById('root'))
 ```
 θα έχει ως αποτέλεσμα: 
 ![Redux devTools](https://lh3.googleusercontent.com/KcTcngC2Qce0saX4Gz219ucxmF6lM_YPgFdk2qMAiZAAWMIDbUX0L5_rLPf0pVBLxBgO3TyTfNpEBA "Redux devTools")
+
+# 3. Δημιουργία Provider και Components
+## Βάζω το προαπαιτούμενο για τον Provider στο αρχείο app.tsx
+
+Αφού κάνω import το {Provider} από το react-redux πακέτο, τότε βάζω το component App, μέσα στο Provider.
+```jsx
+/* ./src/app.tsx */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/app'
+import store from './store'
+import {Provider} from 'react-redux'
+
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>
+	, document.getElementById('root')
+)
+```
+
+Επί της ουσίας τώρα, η πηγή δεδομένων της εφαρμογής είναι έτοιμη

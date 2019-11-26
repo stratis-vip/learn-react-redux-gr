@@ -7,6 +7,6 @@ export {Filters} from './filters'
 export {Query} from './query'
 export {Search} from './search'
 export {StatusCodes} from './status-code'
-export { Data } from './Data'
+export { Data } from './data'
 export {Pagination} from './pagination'
 

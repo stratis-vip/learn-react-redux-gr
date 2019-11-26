@@ -19,10 +19,9 @@ afterEach(() => {
 
 it('Δημιουργείται κανονικά', () => {
   const stringText = "Δοκιμαστικό component"
-  render(<App text={stringText} />, container)
-  expect(container.textContent).toBe(stringText)
+  render(<App />, container)
+  expect(container.textContent).toBe('')
 })
-
 
 
 

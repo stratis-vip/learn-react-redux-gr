@@ -1,6 +1,6 @@
 import React from 'react'
-import { Props } from '../intefaces'
+import Statistics from './statistics'
 
-const App = (props: Props) => <div>{props.text}</div>
+const App = () => <div><Statistics /></div>
 
 export default App
