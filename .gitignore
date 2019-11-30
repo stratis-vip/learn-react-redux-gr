@@ -1,2 +1,4 @@
 */node_modules
 */Public/build/
+.idea/
+.DS_Store

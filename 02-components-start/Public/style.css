@@ -1,0 +1,90 @@
+:root {
+  --main-bgcolor: #e8e6e8;
+  --banner-bgcolor: #50514f;
+  --card-header-bgcolor: #a7ae9f;
+  --card-body-bgcolor: #ebf3f6;
+  --results-bgcolor: #c9c3bf;
+}
+
+body {
+  background-color: var(--main-bgcolor);
+  font-family: Arial;
+  margin: 0;
+  padding: 0;
+  font-family: OpenSansCondensed;
+}
+
+#header {
+  background-color: var(--banner-bgcolor);
+  color: white;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.mainTitle {
+  margin: 0;
+  padding: 1rem;
+  font-family: "TypeWriter";
+}
+
+.subTitle {
+  margin: -0.7rem;
+  padding-bottom: 1rem;
+  font-family: "TypeWriter";
+}
+.card-header {
+  background-color: var(--card-header-bgcolor);
+}
+.card-body {
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: all 0.3s;
+  background-color: var(--card-body-bgcolor);
+}
+
+/* .poems-container{
+  
+} */
+
+.searchText{
+  width: 100%;
+}
+
+.poem {
+  background-color: var(--results-bgcolor);
+}
+
+.rel {
+  position: relative;
+}
+
+.num {
+  font-size: 3rem;
+  position: absolute;
+  top: -2.1rem;
+  left: -0.6rem;
+  opacity: 0.2;
+}
+
+@font-face {
+  font-family: TypeWriter;
+  src: url(./fonts/BPtypewriteDamaged.otf);
+}
+@font-face {
+  font-family: OpenSansCondensed;
+  src: url(./fonts/OpenSansCondLight.woff2);
+}
+
+.more {display: none;}
+#moreLink {text-decoration: none;}
+
+button {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.card-header, .form-check-inline .form-check-input,
+
+#category ul > li , #tax, #ascdesc {
+  cursor: pointer;
+}
