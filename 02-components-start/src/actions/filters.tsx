@@ -3,18 +3,18 @@ export const DEFINE_SORT = "DEFINE_SORT"
 export const DEFINE_CAT = "DEFINE_CAT"
 export const DEFINE_RESET = "DEFINE_RESET"
 
-import { Action } from 'redux'
+import {Action} from 'redux'
 
 export enum ORDER {
-  NO_ORDER = "NO_ORDER",
-  BY_DATE = "BY_DATE",
-  BY_NUM = "BY_NUM"
+  NO_ORDER = "Χωρίς Ταξινόμηση",
+  BY_DATE = "Χρονολογικά",
+  BY_NUM = "Αριθμό καταχώρισης"
 }
 
 export enum SORT {
-  NO_SORT = "NO_SORT",
-  ASC = "ASC",
-  DESC = "DESC"
+  NO_SORT = "Χωρίς σειρά",
+  ASC = "Αύξουσα σειρά",
+  DESC = "Φθίνουσα σειρά"
 }
 
 export interface AddOrderAction extends Action {

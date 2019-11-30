@@ -1,32 +1,23 @@
 import React from 'react'
-import { MainStore, Category } from '../intefaces'
-import { connect } from 'react-redux'
+import {Category, MainStore} from '../intefaces'
+import {connect} from 'react-redux'
+import {waitForServer} from './helpers'
 
 class Statistics extends React.Component<{ categories: Category[] | [] }> {
-
-    total() {
-        const { categories } = this.props
-        let total = 0
-        for (let cat of categories)
-            total += cat.cc
-        return <li><strong>Σύνολο: </strong>{total} εγγραφές</li>
-    }
-    
     renderStatistics() {
-        const { categories } = this.props
-
+        const {categories} = this.props
+        if (categories.length === 0) return <li>{waitForServer()}</li>
         return ((categories as Category[]).map(cat => {
-                return <li key={cat.id}><strong>{cat.description}:</strong> {cat.cc} εγγραφές</li>
-            })
-        ) 
+              return <li key={cat.id}><strong>{cat.description}:</strong> {cat.cc} εγγραφές</li>
+          })
+        )
     }
 
     render() {
         return (
-            <ul>
-                {this.renderStatistics()}
-                {this.total()}
-            </ul>
+          <ul className="list-unstyled mb-0">
+              {this.renderStatistics()}
+          </ul>
         )
     }
 }

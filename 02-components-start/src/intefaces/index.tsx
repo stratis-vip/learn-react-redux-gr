@@ -9,4 +9,4 @@ export {Search} from './search'
 export {StatusCodes} from './status-code'
 export { Data } from './data'
 export {Pagination} from './pagination'
-
+export {CardProps} from './card-props'

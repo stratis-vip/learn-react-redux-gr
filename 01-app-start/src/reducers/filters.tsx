@@ -1,26 +1,33 @@
-import { DEFINE_CAT, DEFINE_ORDER, DEFINE_SORT, DEFINE_RESET, AddOrderAction, AddSortAction, AddCategoryAction, ORDER, SORT} from "../actions/filters"
-import { Action } from "redux"
+import {
+  AddCategoryAction,
+  AddOrderAction,
+  AddSortAction,
+  DEFINE_CAT,
+  DEFINE_ORDER,
+  DEFINE_RESET,
+  DEFINE_SORT,
+  ORDER,
+  SORT
+} from "../actions/filters"
+import {Action} from 'redux'
 import {Filters} from '../intefaces'
 
-export const startingFiltersState:Filters = {
+export const startingFiltersState: Filters = {
   cat: 0,
   order: ORDER.NO_ORDER,
   sort: SORT.NO_SORT
 }
 
-const filters = (state = startingFiltersState, action:Action):Filters => {
+const filters = (state = startingFiltersState, action: Action): Filters => {
   switch (action.type) {
     case DEFINE_ORDER: {
-      let newState = Object.assign({}, state, {order: (action as AddOrderAction).order})
-      return newState
+      return Object.assign({}, state, {order: (action as AddOrderAction).order})
     }
     case DEFINE_SORT: {
-        let newState = Object.assign({}, state, {sort: (action as AddSortAction).sort})
-        return newState
+      return Object.assign({}, state, {sort: (action as AddSortAction).sort})
     }
     case DEFINE_CAT: {
-        let newState = Object.assign({},state,  {cat: (action as AddCategoryAction).category})
-        return newState
+      return Object.assign({}, state, {cat: (action as AddCategoryAction).category})
     }
     case DEFINE_RESET: {
         return startingFiltersState

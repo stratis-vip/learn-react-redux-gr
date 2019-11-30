@@ -4,6 +4,8 @@ module.exports = {
     "**/__tests__/**/*.+(ts|tsx|js)",
     "**/?(*.)+(spec|test).+(ts|tsx|js)"
   ],
-  bail:false,
-  transform: { "^.+\\.(ts|tsx)$": "ts-jest" }
-};
+  bail: false,
+  transform: {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  }
+}
