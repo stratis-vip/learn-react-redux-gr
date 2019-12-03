@@ -1,25 +1,25 @@
 import React from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import {render, unmountComponentAtNode} from 'react-dom'
 import Statistics from './statistics'
-import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
+import {act} from 'react-dom/test-utils'
+import {Provider} from 'react-redux'
 import mockStore from '../store'
-import { addCategory, resetCategories } from '../actions/category'
-import { Category } from '../intefaces'
+import {addCategory, resetCategories} from '../actions/category'
+import {Icategory} from '../intefaces'
 
-const cat1:Category = {id: 1, description: "Ποιητικά", cc:34}
-const cat2:Category = {id: 2, description: "Λογοπλοκίες", cc:215}
-const cat3:Category = {id: 3, description: "Διάφορα", cc:894}
+const cat1: Icategory = {id: 1, description: "Ποιητικά", cc: 34}
+const cat2: Icategory = {id: 2, description: "Λογοπλοκίες", cc: 215}
+const cat3: Icategory = {id: 3, description: "Διάφορα", cc: 894}
 let container = null
 beforeEach(() => {
-    container = document.createElement("div")
-    document.body.appendChild(container)
+  container = document.createElement("div")
+  document.body.appendChild(container)
 })
 
 afterEach(() => {
-    unmountComponentAtNode(container)
-    container.remove()
-    container = null
+  unmountComponentAtNode(container)
+  container.remove()
+  container = null
 })
 
 it('Δημιουργείται κανονικά', () => {

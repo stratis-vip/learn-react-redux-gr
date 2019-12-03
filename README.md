@@ -208,7 +208,7 @@ module.exports  = {
 α. Στην React η εφαρμογή μας είναι στην ουσία ένα μεγάλο [Component](https://reactjs.org/docs/react-component.html), οπότε απαιτείται να δώσουμε το πατρικό [div](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) πού θα φιλοξενήσει την εφαρμογή. Η React, απαιτεί αυτό το div, για να καλέσει την συνάρτηση [render()](https://reactjs.org/docs/react-dom.html#render)
 ```html
 <!-- ./Public/index.html -->
-<html>
+<html lang="el">
 	<body>
 		<div  id="root">Εδώ θα μπει το Component της εφαρμογής</div>
 		<script  src="./build/app.js"></script>
@@ -317,8 +317,8 @@ npm test
 Η εφαρμογή που θα δημιουργήσω θα παρουσιάζει τα [κείμενα της συλλογής Χριστοδούλου](http://dbase.texnopraksis.com).
 To store λοιπόν στην αρχή έχει τη μορφή:
 ```js
-store: {
-	categories: [],
+{
+	[],
 	queries: Query,
 	
 }

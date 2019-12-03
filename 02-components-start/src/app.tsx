@@ -8,12 +8,13 @@ import {Provider} from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../Public/style.css'
 import {addCategory, incCategory} from './actions/category'
-import {Category} from './intefaces'
+import {Icategory} from './intefaces'
+import {getInitialData} from "./apiConnect";
 
 
 let curCatId = 0
 
-const createCategory = (): Category => {
+const createCategory = (): Icategory => {
   curCatId += 1
   return {
     id: curCatId,
@@ -23,6 +24,10 @@ const createCategory = (): Category => {
 }
 
 store.subscribe(() => console.log(store.getState()))
+
+
+getInitialData(store).then(r => console.log('GETINITIAL DATA = ', r))
+
 ReactDOM.render(
   <Provider store={store}>
     <div>

@@ -8,7 +8,6 @@
 
 body {
   background-color: var(--main-bgcolor);
-  font-family: Arial;
   margin: 0;
   padding: 0;
   font-family: OpenSansCondensed;
@@ -83,8 +82,7 @@ button {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.card-header, .form-check-inline .form-check-input,
-
-#category ul > li , #tax, #ascdesc {
+.card-header, .form-check-inline, .form-check-input,
+#category ul > li, #tax, #ascdesc {
   cursor: pointer;
 }

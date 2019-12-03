@@ -1,25 +1,25 @@
 import React from 'react'
-import {Category, MainStore} from '../intefaces'
+import {Icategory, MainStore} from '../intefaces'
 import {connect} from 'react-redux'
 import {waitForServer} from './helpers'
 
-class Statistics extends React.Component<{ categories: Category[] | [] }> {
-    renderStatistics() {
-        const {categories} = this.props
-        if (categories.length === 0) return <li>{waitForServer()}</li>
-        return ((categories as Category[]).map(cat => {
-              return <li key={cat.id}><strong>{cat.description}:</strong> {cat.cc} εγγραφές</li>
-          })
-        )
-    }
+class Statistics extends React.Component<{ categories: Icategory[] | [] }> {
+  renderStatistics() {
+    const {categories} = this.props
+    if (categories.length === 0) return <li>{waitForServer()}</li>
+    return ((categories as Icategory[]).map(cat => {
+        return <li key={cat.id}><strong>{cat.description}:</strong> {cat.cc} εγγραφές</li>
+      })
+    )
+  }
 
-    render() {
-        return (
-          <ul className="list-unstyled mb-0">
-              {this.renderStatistics()}
-          </ul>
-        )
-    }
+  render() {
+    return (
+      <ul className="list-unstyled mb-0">
+        {this.renderStatistics()}
+      </ul>
+    )
+  }
 }
 
 const mapStateToProps = (state: MainStore) => {

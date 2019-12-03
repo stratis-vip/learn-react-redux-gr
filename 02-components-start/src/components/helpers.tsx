@@ -1,5 +1,5 @@
 import React from 'react'
-import { Category } from '../intefaces'
+import {Icategory} from '../intefaces'
 
 export const waitForServer = () => (
     <div className='alert-primary'>
@@ -8,9 +8,9 @@ export const waitForServer = () => (
     </div>
 )
 
-export const sumOfCategoriesRecords = (categories: Category[]) => {
-    let total = 0
-    for (let cat of categories)
-        total += cat.cc
-    return total
+export const sumOfCategoriesRecords = (categories: Icategory[]) => {
+  let total = 0
+  for (let cat of categories)
+    total += cat.cc
+  return total
 }

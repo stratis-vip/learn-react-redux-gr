@@ -5,4 +5,5 @@ export interface Poem {
     category: number
     imnia_auth: string
     eksigisi?: string
+
 }

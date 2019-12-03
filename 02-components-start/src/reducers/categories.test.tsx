@@ -1,7 +1,7 @@
 import rootReducer from "./index"
-import { Category } from "../intefaces"
-import { createStore } from "redux"
-import { addCategory, incCategory, resetCategories } from "../actions/category"
+import {Icategory} from "../intefaces"
+import {createStore} from "redux"
+import {addCategory, incCategory, resetCategories} from "../actions/category"
 
 let store = null
 const initStore = () => createStore(rootReducer)
@@ -10,7 +10,7 @@ beforeEach(() => store = initStore())
 test("Store must exists", () => {
     expect(store).not.toBe(null)
     const state = store.getState()
-    expect((state.categories as Array<Category>)).toStrictEqual([])
+    expect((state.categories as Array<Icategory>)).toStrictEqual([])
     expect(state.query.filters.cat).toBe(0)
     expect(state.query.what).toStrictEqual([])
     // expect(state.pagination.page).toBe(1)

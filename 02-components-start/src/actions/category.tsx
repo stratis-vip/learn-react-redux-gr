@@ -1,4 +1,4 @@
-import {AddCategoryAction, Category, IncCategoryAction} from "../intefaces"
+import {IaddCategoryAction, Icategory, IincCategoryAction} from "../intefaces"
 import {Action} from "redux"
 
 //προσθέτει μια κατηγορία στο store
@@ -9,15 +9,16 @@ export const ADD_CATEGORY = 'ADD_CATEGORY'
 //αυτό γίνεται όταν θα προσθέτω ποίημα και πρέπει να αυξήσω τα στατιστικά
 export const INC_CATEGORY_COUNT = 'INC_CATEGORY_COUNT'
 
+// μηδενίζει τις κατηγορίες
 export const RESET_CATEGORIES = 'RESET_CATEGORIES'
 
-
-export const addCategory = (category: Category): AddCategoryAction => ({
+// προσθέτει την κατηγορία category
+export const addCategory = (category: Icategory): IaddCategoryAction => ({
   type: ADD_CATEGORY,
   category
 })
 
-export const incCategory = (categoryId: number): IncCategoryAction => ({
+export const incCategory = (categoryId: number): IincCategoryAction => ({
   type: INC_CATEGORY_COUNT,
   categoryId
 })

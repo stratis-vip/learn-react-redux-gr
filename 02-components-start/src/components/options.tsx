@@ -1,22 +1,22 @@
 import React from 'react'
-import { Category, MainStore, Filters } from '../intefaces'
-import { connect } from 'react-redux'
-import { waitForServer } from './helpers'
-import { bindActionCreators } from 'redux'
-import { addCat, ORDER, SORT, addOrder, addSort } from '../actions/filters'
+import {Filters, Icategory, MainStore} from '../intefaces'
+import {connect} from 'react-redux'
+import {waitForServer} from './helpers'
+import {bindActionCreators} from 'redux'
+import {addCat, addOrder, addSort, ORDER, SORT} from '../actions/filters'
 
-const Options = (props: { categories: Category[], filters: Filters, addCat: any, addOrder:any, addSort:any }) => {
-    const { categories, addCat, addOrder, addSort} = props
-    const { cat, order, sort } = props.filters
+const Options = (props: { categories: Icategory[], filters: Filters, addCat: any, addOrder: any, addSort: any }) => {
+    const {categories, addCat, addOrder, addSort} = props
+    const {cat, order, sort} = props.filters
     const changeFilterHandler = (ev) => {
         const value = parseInt(ev.target.value)
         addCat(value)
     }
-    const changeOrderHandler =(ev) => {
+    const changeOrderHandler = (ev) => {
         const index = ev.target.selectedIndex
         addOrder(ev.target[index].text)
     }
-    const changeSortHandler =(ev) => {
+    const changeSortHandler = (ev) => {
         const index = ev.target.selectedIndex
         addSort(ev.target[index].text)
     }
@@ -24,10 +24,10 @@ const Options = (props: { categories: Category[], filters: Filters, addCat: any,
     const firstRow = () => {
         return (
             <li key={0} ><input
-                className="form-check-input" type="radio" name="category"
-                value='0'
-                onChange={changeFilterHandler}
-                checked={cat === 0 ? true : false}
+              className="form-check-input" type="radio" name="category"
+              value='0'
+              onChange={changeFilterHandler}
+              checked={cat === 0}
             />Όλες οι κατηγορίες</li>
         )
     }
@@ -37,10 +37,10 @@ const Options = (props: { categories: Category[], filters: Filters, addCat: any,
         return (
             categories.map((category, index) => {
                 return <li key={category.id} ><input
-                    className="form-check-input" type="radio" name="category"
-                    value={category.id}
-                    checked={cat === index + 1 ? true : false}
-                    onChange={changeFilterHandler}
+                  className="form-check-input" type="radio" name="category"
+                  value={category.id}
+                  checked={cat === index + 1}
+                  onChange={changeFilterHandler}
                 />{category.description} </li>
             })
         )
@@ -61,23 +61,23 @@ const Options = (props: { categories: Category[], filters: Filters, addCat: any,
     }
 
     return (
-        <form id="category" className="form-check" action="none">
-            <ul className="list-unstyled mb-0">
-                {categories.length !== 0 ? firstRow() : null}
-                {renderFilters()}
-                <div hidden={categories.length === 0} className="mt-3">
-                    <select className="form-control" id="tax" defaultValue={order}
-                    onChange={changeOrderHandler}>
-                        {renderOrder()}
-                    </select>
-                    <select className="form-control mt-3" id="ascdesc" defaultValue={sort}
-                    onChange={changeSortHandler}>
-                        {renderTax()}
-                    </select>
+      <form id="category" className="form-check" action="">
+          <ul className="list-unstyled mb-0">
+              {categories.length !== 0 ? firstRow() : null}
+              {renderFilters()}
+              <div hidden={categories.length === 0} className="mt-3">
+                  <select className="form-control" id="tax" defaultValue={order}
+                          onChange={changeOrderHandler}>
+                      {renderOrder()}
+                  </select>
+                  <select className="form-control mt-3" id="ascdesc" defaultValue={sort}
+                          onChange={changeSortHandler}>
+                      {renderTax()}
+                  </select>
 
-                </div>
-            </ul>
-        </form>
+              </div>
+          </ul>
+      </form>
     )
 
 }
@@ -90,6 +90,7 @@ const mapStateToProps = (state: MainStore) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-    return bindActionCreators({ addCat, addOrder, addSort }, dispatch)
+    return bindActionCreators({addCat, addOrder, addSort}, dispatch)
+
 }
 export default connect(mapStateToProps, matchDispatchToProps)(Options)

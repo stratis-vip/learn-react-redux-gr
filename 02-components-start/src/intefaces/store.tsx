@@ -1,9 +1,9 @@
-import { Category, Search, Query, Poem, Pagination } from "."
+import {Icategory, Pagination, Poem, Query, Search} from "."
 
 export interface MainStore {
-    categories: Array<Category> | []
-    query: Query
-    search: Search
-    data: Array<Poem>
-    pagination: Pagination
+  categories: Array<Icategory> | []
+  query: Query
+  search: Search
+  data: Array<Poem>
+  pagination: Pagination
 }
