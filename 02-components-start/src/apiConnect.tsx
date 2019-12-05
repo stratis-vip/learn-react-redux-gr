@@ -59,9 +59,7 @@ export const getFromServer = (url: string, query?: string): Promise<IapiPoemsRes
 }
 
 
-export const get = async () => {
-  const cc = await getInitialData(store)
-  setInitialPagination(cc, store);
+export function getPoemsFromServer() {
   getDataArray().then(dataResponse => {
     if (dataResponse.code === 200) {
       store.dispatch(addDataArray(dataResponse.data as unknown as Poem[]))
@@ -69,15 +67,35 @@ export const get = async () => {
   })
 }
 
+export const refreshDataFromServer = () => {
+  getInitialData(store).then((cc: number) => {
+    if (cc !== 0) {
+      setInitialPagination(cc, store)
+      getPoemsFromServer()
+    }
+  })
+}
+
+
 export const getStatistics = () => {
   getFromServer(`${serverUrl}statistics`).then((data) => {
     store.dispatch(addAllCategories((data.data! as unknown as Icategory[])))
   })
 }
 
-const getDataArray = async () => {
+export const getDataArray = async () => {
   let queries = constructQueryFromState(store.getState().query)
   return await getFromServer(`${serverUrl}query`, queries.dataQuery)
+}
+
+const getOrderText = (val: string) => {
+  console.log('ORDER.BY_DATE=', ORDER.BY_DATE, val, ORDER.BY_DATE === val)
+  return val === ORDER.BY_DATE ? 'imnia_auth' : 'id'
+}
+
+const getSortText = (val: string) => {
+  console.log('SORT.ASC=', SORT.ASC, val, SORT.ASC === val)
+  return val === SORT.ASC ? ' ASC' : ' DESC'
 }
 /***
  * Δημιουργεί δυο queries, το data και το count (για αν μετρά πρώτα και μετά να ζητά τα δεδομένα)
@@ -89,26 +107,27 @@ const constructQueryFromState = (query: Query): { dataQuery: string, countQuery:
   const what: string = query.what.length === 0 ? '*' : query.what.join(' ')
   const from: string = query.from.length === 0 ? 'keimena' : query.from.join(' ')
   const where: string = query.where.length === 0 ? '' : 'WHERE ' + query.where.join(' ')
-  const order: string = query.order === ORDER.NO_ORDER ? '' : 'ORDER BY ' + query.order
-  let sort: string = query.sort === SORT.NO_SORT ? '' : query.sort
-
+  const order: string = query.filters.order === ORDER.NO_ORDER ? '' : 'ORDER BY ' + getOrderText(query.filters.order)
+  let sort: string = query.filters.sort === SORT.NO_SORT ? '' : getSortText(query.filters.sort)
+  if (order === '') sort = ''
   queryArray.push(type)
   queryArray.push(what)
   queryArray.push(`FROM ${from}`)
   queryArray.push(where)
   queryArray.push(order)
-  if (order.length > 0) {
-    if (sort !== '') {
-      sort = sort === SORT.ASC ? `ASC` : `DESC`
-    }
-  }
   queryArray.push(sort)
   queryArray.push(`LIMIT ${query.offset}, ${query.limit}`)
   let arStr = ''
   for (let ar of queryArray)
     if (ar.length > 0) arStr += ar + ' '
-  const countQuery = queryArray[0] + ` count(${queryArray[1]}) as cc ` + queryArray[2]
-  return {dataQuery: arStr, countQuery: countQuery}
+  let countQuery = [...queryArray]
+  countQuery[1] = ` count(${queryArray[1]}) as cc `
+
+  const ctStr = countQuery.map((que, index) => {
+    if (index < 4) return que
+  })
+  console.log(arStr, '   ', ctStr.join(' '))
+  return {dataQuery: arStr, countQuery: ctStr.join(' ')}
 }
 
 /**
@@ -122,16 +141,16 @@ export function setInitialPagination(cc: number, store) {
 
   pag.results = cc
   let rpp = resultsPerPage === 0 ? 10 : resultsPerPage
-  if (rpp !== resultsPerPage) {
-    pag.resultsPerPage = rpp
-    let totPages = Math.ceil(cc / rpp)
-    if (totPages !== totalPages) {
-      pag.totalPages = totPages
-    }
-    if (page !== 1) {
-      pag.page = 1
-    }
+
+  pag.resultsPerPage = rpp
+  let totPages = Math.ceil(cc / rpp)
+  if (totPages !== totalPages) {
+    pag.totalPages = totPages
   }
+  if (page !== 1) {
+    pag.page = 1
+  }
+
 
   store.dispatch(setPagination(pag))
   store.dispatch(addToQueryLimit(rpp))
@@ -143,13 +162,11 @@ export function setInitialPagination(cc: number, store) {
  * @param store
  */
 export const getInitialData = (store) => {
-  return new Promise<number>(async (resolve) => {
+  return new Promise<number>((resolve) => {
     let queries = constructQueryFromState(store.getState().query)
 
-    let count = await getCountFromServer(`${serverUrl}query`, queries.countQuery)
-      //.then(response => console.log(response))
+    getCountFromServer(`${serverUrl}query`, queries.countQuery)
+      .then(response => resolve(response))
       .catch(er => console.log(er))
-    // const {data} = count
-    resolve(count ? count : 0)
   })
 }

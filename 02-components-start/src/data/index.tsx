@@ -14,17 +14,15 @@ const mData = (state: MainStore, action: Action) => {
     query: {
       filters: {
         cat: 0,
-        order: '',
-        sort: ''
+        order: ORDER.NO_ORDER,
+        sort: SORT.NO_SORT
       },
       type: 'SELECT',
       what: ['*'],
       from: ['keimena'],
       where: [],
-      order: ORDER.NO_ORDER,
-      sort: SORT.NO_SORT,
       offset: 0,
-      limit: 0
+      limit: 10
     },
     search: {
       text: null,

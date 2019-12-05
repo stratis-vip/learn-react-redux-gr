@@ -1,12 +1,11 @@
 import React from "react"
-import { MainStore } from "../intefaces"
-import { bindActionCreators } from "redux"
-import { connect } from 'react-redux'
-import { addSearchByNumber, AddSearchByNumberAction, addSearchByText, AddSearchByTextAction } from "../actions/search"
-import { Search } from '../intefaces'
+import {MainStore, Search} from "../intefaces"
+import {bindActionCreators} from "redux"
+import {connect} from 'react-redux'
+import {addSearchByNumber, addSearchByText} from "../actions/search"
 
 const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
-  const { searchText, searchNum } = props
+  const {searchText, searchNum} = props
   // const getVal = (dataKeyval: string): string | null => {
   //   return (document.querySelector(`input[data-key="${dataKeyval}"]`) as HTMLInputElement).value
   // }
@@ -50,7 +49,7 @@ const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
   // }
 
   const onTextBtnPress = (ev) =>{
-    console.log(ev.target)
+
     const text = (document.querySelector('input[data-key="inText"]') as HTMLInputElement).value
     if (text.trim().length > 3)
       searchText(text)
@@ -58,11 +57,11 @@ const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
 
   const onNumBtnPress = (ev) =>{
     //TODO να ψάχνει μόνο αν αλλάζει πραγματικά
-    console.log(ev.target)
+
     const num = parseInt((document.querySelector('input[data-key="inNum"]') as HTMLInputElement).value)
     if (!isNaN(num)) {
       searchNum(num)
-      console.log(num)
+
     }
   }
 

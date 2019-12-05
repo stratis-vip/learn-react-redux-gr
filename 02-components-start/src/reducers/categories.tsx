@@ -22,8 +22,7 @@ const categories = (state: Array<Icategory> = [], action: Action) => {
       return []
     case ADD_ALL_CATEGORIES:
       let alfa = (action as IaddAllCategories).categories
-      alfa.unshift({id: 0, cc: 0, description: ''})
-      console.log('ALFA =', alfa)
+      alfa.unshift({id: 0, cc: 0, description: 'Όλες οι κατηγορίες'})
       return alfa
 
     default:

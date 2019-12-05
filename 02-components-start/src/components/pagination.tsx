@@ -3,13 +3,15 @@ import {MainStore, Pagination} from "../intefaces";
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import {setPage} from "../actions/pagination";
+import {getPoemsFromServer} from "../apiConnect";
+import {addToQueryOffset} from "../actions/query";
 
 const paginatorWidth = 6;
 
-const Pagination = (props: { pagination: Pagination, setNewPage: any }) => {
+const Pagination = (props: { pagination: Pagination, setNewPage: any, setOffset: any }) => {
 
   const {totalPages, page} = props.pagination
-  const {setNewPage} = props
+  const {setNewPage, setOffset} = props
   const prevPages = (first: boolean) => {
     let id = page > 1 ? page - 1 : page
     let velos = `«`;
@@ -32,7 +34,7 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any }) => {
   }
   const makePages = () => {
     let items = []
-    for (let i = 1; i < totalPages; i++)
+    for (let i = 1; i < totalPages + 1; i++)
       items.push(<li key={i} id="prev" className="page-item">
         <a className="page-link" href="#/"
            onClick={getPage}
@@ -43,9 +45,9 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any }) => {
 
   const getPage = ev => {
     let newPage = parseInt(ev.target.dataset['key']);
-    console.log('id = ', newPage)
-    console.log('ev = ', ev)
     setNewPage(newPage)
+    setOffset((newPage - 1) * props.pagination.resultsPerPage)
+    getPoemsFromServer()
   };
 
 
@@ -107,7 +109,7 @@ const mapStateToProps = (state: MainStore) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({setNewPage: setPage}, dispatch)
+  return bindActionCreators({setNewPage: setPage, setOffset: addToQueryOffset}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Pagination)

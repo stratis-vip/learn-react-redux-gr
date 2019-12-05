@@ -1,16 +1,17 @@
-import { Action } from 'redux'
+import {Action} from 'redux'
 
-export const ADD_WHAT =  'ADD_WHAT'
+export const ADD_WHAT = 'ADD_WHAT'
 export const REPLACE_WHAT = 'REPLACE_WHAT'
 export const ADD_FROM = 'ADD_FROM'
-export const REPLACE_FROM ='REPLACE_FROM'
-export const ADD_WHERE = 'ADD_WHERE'
-export const REPLACE_WHERE ='REPLACE_WHERE'
+export const REPLACE_FROM = 'REPLACE_FROM'
+export const SET_WHERE = 'ADD_WHERE'
+export const CLEAR_WHERE = 'CLEAR_WHERE'
+export const REPLACE_WHERE = 'REPLACE_WHERE'
 export const ADD_OFFSET = 'ADD_OFFSET'
 export const ADD_LIMIT = 'ADD_LIMIT'
 
 export enum SQL_TYPES {
-    SELECT ='SELECT'
+    SELECT = 'SELECT'
 }
 
 export interface AddToQueryWhatAction extends Action {
@@ -29,7 +30,7 @@ export interface ReplaceQueryFromAction extends Action {
     from: string
 }
 
-export interface AddToQueryWhereAction extends Action {
+export interface SetQueryWhereAction extends Action {
     where: string
 }
 
@@ -65,9 +66,13 @@ export const replaceQueryFrom = (from: string): ReplaceQueryFromAction => ({
     from
 })
 
-export const addToQueryWhere = (where: string): AddToQueryWhereAction => ({
-    type: ADD_WHERE,
+export const setQueryWhere = (where: string): SetQueryWhereAction => ({
+    type: SET_WHERE,
     where
+})
+
+export const clearQueryWhere = (): Action => ({
+    type: CLEAR_WHERE
 })
 
 export const replaceQueryWhere = (where: string): ReplaceWhereFromAction => ({

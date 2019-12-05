@@ -3,24 +3,24 @@ import {
   ADD_LIMIT,
   ADD_OFFSET,
   ADD_WHAT,
-  ADD_WHERE,
   AddToQueryFromAction,
   AddToQueryLimitAction,
   AddToQueryOffsetAction,
   AddToQueryWhatAction,
-  AddToQueryWhereAction,
+  CLEAR_WHERE,
   REPLACE_FROM,
   REPLACE_WHAT,
   REPLACE_WHERE,
   ReplaceQueryFromAction,
   ReplaceQueryWhatAction,
   ReplaceWhereFromAction,
+  SET_WHERE,
+  SetQueryWhereAction,
   SQL_TYPES
 } from "../actions/query"
 import filters, {startingFiltersState} from "./filters"
 import {Action} from "redux"
 import {Query} from "../intefaces"
-import {ORDER, SORT} from "../actions/filters";
 
 const startingQuery: Query = {
   filters: startingFiltersState,
@@ -28,10 +28,8 @@ const startingQuery: Query = {
   what: [],
   from: [],
   where: [],
-  order: ORDER.NO_ORDER,
-  sort: SORT.NO_SORT,
   offset: 0,
-  limit: 0
+  limit: 10
 }
 
 const query = (state = startingQuery, action: Action) => {
@@ -53,9 +51,13 @@ const query = (state = startingQuery, action: Action) => {
       return Object.assign({}, state, {
         from: [(action as ReplaceQueryFromAction).from]
       })
-    case ADD_WHERE:
+    case SET_WHERE:
       return Object.assign({}, state, {
-        where: [...state.where, (action as AddToQueryWhereAction).where]
+        where: [(action as SetQueryWhereAction).where]
+      })
+    case CLEAR_WHERE:
+      return Object.assign({}, state, {
+        where: []
       })
     case REPLACE_WHERE:
       return Object.assign({}, state, {

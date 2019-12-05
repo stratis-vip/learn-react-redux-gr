@@ -7,12 +7,12 @@ import {Provider} from 'react-redux'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import '../Public/style.css'
-import {get, getStatistics} from "./apiConnect";
+import {getStatistics, refreshDataFromServer} from "./apiConnect";
 
 
 store.subscribe(() => console.log(store.getState()))
 
-get()
+refreshDataFromServer()
 getStatistics()
 
 ReactDOM.render(

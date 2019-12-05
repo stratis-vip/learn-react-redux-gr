@@ -6,8 +6,6 @@ export interface Query {
   what: Array<string>
   from: Array<string>
   where: Array<string>
-  order: string
-  sort: string
   offset: number
   limit: number
 }

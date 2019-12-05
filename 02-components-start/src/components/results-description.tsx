@@ -2,7 +2,9 @@ import React from "react";
 import {connect} from 'react-redux'
 import {MainStore, Pagination} from "../intefaces";
 import {bindActionCreators} from "redux";
-import {setResultsPerPage} from "../actions/pagination";
+import {setResultsPerPage, setTotalPages} from "../actions/pagination";
+import {getPoemsFromServer} from "../apiConnect";
+import {addToQueryLimit} from "../actions/query";
 
 const createRadioBox = (pagination, fn) => {
   const data = [1, 5, 10]
@@ -19,9 +21,17 @@ const createRadioBox = (pagination, fn) => {
   })
 }
 
-const ResultsDescription = (props: { pagination: Pagination, setResultsPerPage: any }) => {
+
+const ResultsDescription = (props: { pagination: Pagination, setResultsPerPage: any, setLimit: any, setTPages: any }) => {
   const {pagination} = props
-  const setResults = props.setResultsPerPage
+  const {setResultsPerPage, setLimit, setTPages} = props
+  const refreshChange = (key) => {
+    setResultsPerPage(key)
+    setTPages(Math.ceil(pagination.results / key))
+    setLimit(key)
+    getPoemsFromServer()
+  }
+
   return (
     <div className="text-center">
       <div className="alert alert-info m-0">
@@ -30,7 +40,7 @@ const ResultsDescription = (props: { pagination: Pagination, setResultsPerPage: 
         </p>
         <p className="d-inline mr-2">
           Αποτελ. ανα σελίδα </p>
-        {createRadioBox(pagination, setResults)}
+        {createRadioBox(pagination, refreshChange)}
       </div>
     </div>
   )
@@ -43,6 +53,6 @@ const mapStateToProps = (state: MainStore) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({setResultsPerPage}, dispatch)
+  return bindActionCreators({setResultsPerPage, setLimit: addToQueryLimit, setTPages: setTotalPages}, dispatch)
 }
 export default connect(mapStateToProps, matchDispatchToProps)(ResultsDescription)

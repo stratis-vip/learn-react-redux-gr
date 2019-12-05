@@ -3,9 +3,10 @@ import Options from './options'
 import Card from './card'
 import {Filters, Icategory, MainStore} from '../intefaces'
 import {connect} from 'react-redux'
+import {refreshDataFromServer} from "../apiConnect";
 
 const normalize = (num: number) => {
-  return num === 0 ? 0 : num - 1
+  return num === 0 ? 0 : num
 }
 
 const CardFilterCategories = (props: { categories: Icategory[], filters: Filters }) => {
@@ -21,13 +22,17 @@ const CardFilterCategories = (props: { categories: Icategory[], filters: Filters
     if (cat === 0) {
       header += `{Όλες οι κατηγορίες}`
     } else {
-      console.log(cat, normalize(cat), categories, categories[normalize(cat)])
       header += `{${categories[normalize(cat)].description}}`
     }
   }
 
   return (
-    <Card {...{headerText: header, isReady: isReady, child: <Options/>}} />
+    <div><Card {...{headerText: header, isReady: isReady, child: <Options/>}} />
+      <div className="text-center">
+        <button className="btn btn-primary mt-2" onClick={refreshDataFromServer}>Εφαρμογή</button>
+      </div>
+    </div>
+
     // TODO: Να βρίσκει το Ερρορ και να το ενεργοποιεί
   )
 }

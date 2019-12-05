@@ -1,28 +1,37 @@
-import { createStore } from "redux"
+import {createStore} from "redux"
 import rootReducer from "."
-import { addOrder, ORDER, SORT, addSort, addCat, resetFilters } from "../actions/filters"
-import { startingFiltersState } from "./filters"
-import { addToQueryWhat, replaceQueryWhat, addToQueryFrom, replaceQueryFrom, addToQueryWhere, replaceQueryWhere, addToQueryOffset, addToQueryLimit } from "../actions/query"
+import {addCat, addOrder, addSort, ORDER, resetFilters, SORT} from "../actions/filters"
+import {startingFiltersState} from "./filters"
+import {
+  addToQueryFrom,
+  addToQueryLimit,
+  addToQueryOffset,
+  addToQueryWhat,
+  replaceQueryFrom,
+  replaceQueryWhat,
+  replaceQueryWhere,
+  setQueryWhere
+} from "../actions/query"
 
 let store = null
 const initStore = () => createStore(rootReducer)
 beforeEach(() => store = initStore())
 
 describe("Filters", () => {
-    it('"Order by"', () => {
-      
-      store.dispatch(addOrder(ORDER.BY_DATE))
-      const filters = store.getState().query.filters
-      expect(filters.cat).toBe(0)
-      expect(filters.order).toBe(ORDER.BY_DATE)
-      expect(filters.sort).toBe(SORT.NO_SORT)
-  
-      store.dispatch(addOrder(ORDER.BY_NUM))
-      const newFilters = store.getState().query.filters
-      expect(newFilters.cat).toBe(0)
-      expect(newFilters.order).toBe(ORDER.BY_NUM)
-      expect(newFilters.sort).toBe(SORT.NO_SORT)
-    })
+  it('"Order by"', () => {
+
+    store.dispatch(addOrder(ORDER.BY_DATE))
+    const filters = store.getState().query.filters
+    expect(filters.cat).toBe(0)
+    expect(filters.order).toBe(ORDER.BY_DATE)
+    expect(filters.sort).toBe(SORT.NO_SORT)
+
+    store.dispatch(addOrder(ORDER.BY_NUM))
+    const newFilters = store.getState().query.filters
+    expect(newFilters.cat).toBe(0)
+    expect(newFilters.order).toBe(ORDER.BY_NUM)
+    expect(newFilters.sort).toBe(SORT.NO_SORT)
+  })
   
     it('"Sort by"', () => {
       
@@ -102,13 +111,13 @@ describe("Filters", () => {
     })
   
     it('"Add to Where"', () => {
-      store.dispatch(addToQueryWhere('id = 5'))
+      store.dispatch(setQueryWhere('id = 5'))
       const query = store.getState().query
       expect(query.where).toStrictEqual(['id = 5'])
     })
   
     it('"Replace Where"', () => {
-      store.dispatch(addToQueryWhere('id = 5'))
+      store.dispatch(setQueryWhere('id = 5'))
       const query = store.getState().query
       expect(query.where).toStrictEqual(['id = 5'])
   

@@ -4,12 +4,17 @@ import {connect} from 'react-redux'
 import {waitForServer} from './helpers'
 import {bindActionCreators} from 'redux'
 import {addCat, addOrder, addSort, ORDER, SORT} from '../actions/filters'
+import {clearQueryWhere, setQueryWhere} from "../actions/query";
 
-const Options = (props: { categories: Icategory[], filters: Filters, addCat: any, addOrder: any, addSort: any }) => {
-    const {categories, addCat, addOrder, addSort} = props
+const Options = (props: {
+    categories: Icategory[], filters: Filters,
+    addCat: any, addOrder: any, addSort: any, setWhere: any, clearWhere: any
+}) => {
+    const {categories, addCat, addOrder, addSort, setWhere, clearWhere} = props
     const {cat, order, sort} = props.filters
     const changeFilterHandler = (ev) => {
         const value = parseInt(ev.target.value)
+        value === 0 ? clearWhere() : setWhere(` category = ${value}`)
         addCat(value)
     }
     const changeOrderHandler = (ev) => {
@@ -21,17 +26,6 @@ const Options = (props: { categories: Icategory[], filters: Filters, addCat: any
         addSort(ev.target[index].text)
     }
 
-    const firstRow = () => {
-        return (
-            <li key={0} ><input
-              className="form-check-input" type="radio" name="category"
-              value='0'
-              onChange={changeFilterHandler}
-              checked={cat === 0}
-            />Όλες οι κατηγορίες</li>
-        )
-    }
-
     const renderFilters = () => {
         if (categories.length === 0) return <li>{waitForServer()}</li>
         return (
@@ -39,7 +33,7 @@ const Options = (props: { categories: Icategory[], filters: Filters, addCat: any
                 return <li key={category.id} ><input
                   className="form-check-input" type="radio" name="category"
                   value={category.id}
-                  checked={cat === index + 1}
+                  checked={cat === index}
                   onChange={changeFilterHandler}
                 />{category.description} </li>
             })
@@ -63,7 +57,7 @@ const Options = (props: { categories: Icategory[], filters: Filters, addCat: any
     return (
       <form id="category" className="form-check" action="">
           <ul className="list-unstyled mb-0">
-              {categories.length !== 0 ? firstRow() : null}
+              {/*{categories.length !== 0 ? firstRow() : null}*/}
               {renderFilters()}
               <div hidden={categories.length === 0} className="mt-3">
                   <select className="form-control" id="tax" defaultValue={order}
@@ -90,7 +84,10 @@ const mapStateToProps = (state: MainStore) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-    return bindActionCreators({addCat, addOrder, addSort}, dispatch)
+    return bindActionCreators({
+        addCat, addOrder, addSort, setWhere: setQueryWhere,
+        clearWhere: clearQueryWhere
+    }, dispatch)
 
 }
 export default connect(mapStateToProps, matchDispatchToProps)(Options)
