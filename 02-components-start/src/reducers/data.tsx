@@ -1,6 +1,6 @@
-import { Poem } from '../intefaces'
-import { AddDataAction, ADD_DATA, CLEAR_DATA, ADD_DATA_ARRAY, AddDataArrayAction } from '../actions/data'
-import { Action } from 'redux'
+import {Poem} from '../intefaces'
+import {ADD_DATA, ADD_DATA_ARRAY, AddDataAction, AddDataArrayAction, CLEAR_DATA} from '../actions/data'
+import {Action} from 'redux'
 
 export const data = (state: Array<Poem> = [], action: Action) => {
     switch (action.type) {
@@ -9,7 +9,9 @@ export const data = (state: Array<Poem> = [], action: Action) => {
             const exists = state.filter(a => a.id === newData.id)
             if (exists.length === 0) {
                 return [...state, newData]
-            } else { return [...state] }
+            } else {
+                return [...state]
+            }
         }
         case ADD_DATA_ARRAY: {
             let tempState = (action as AddDataArrayAction).replaceState ? [] : [...state]
@@ -22,5 +24,6 @@ export const data = (state: Array<Poem> = [], action: Action) => {
             return state
     }
 }
+
 
 export default data

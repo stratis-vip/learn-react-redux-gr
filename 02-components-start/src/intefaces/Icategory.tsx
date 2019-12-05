@@ -15,4 +15,8 @@ export interface IincCategoryAction extends Action {
   categoryId: number
 }
 
+export interface IaddAllCategories extends Action {
+  categories: Icategory[]
+}
+
 

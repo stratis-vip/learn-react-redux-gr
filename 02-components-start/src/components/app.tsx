@@ -6,6 +6,7 @@ import Search from "./search";
 import QueryDescription from "./query-description";
 import ResultsDescription from "./results-description";
 import Pagination from "./pagination";
+import Poem from "./poem";
 
 const App: React.FC = () => {
 
@@ -22,8 +23,9 @@ const App: React.FC = () => {
         <QueryDescription/>
         <ResultsDescription/>
         <Pagination/>
-
-        <h3>Αποτελέσματα αναζήτησης</h3>
+        <div className="container-fluid pt-1" id="results">
+          <Poem/>
+        </div>
       </div>
     </div>
   </div>

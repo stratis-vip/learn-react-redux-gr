@@ -1,9 +1,12 @@
-import {IapiPoemsResponse, Poem, Query} from "./intefaces";
+import {IapiPoemsResponse, Icategory, Poem, Query} from "./intefaces";
 import axios from 'axios'
 import {ORDER, SORT} from "./actions/filters";
 import {setPagination} from "./actions/pagination";
 import {addToQueryLimit, addToQueryOffset} from "./actions/query";
 import {addDataArray} from "./actions/data";
+import {addAllCategories} from "./actions/category";
+import store from "./store";
+
 
 const serverUrl = 'http://localhost:3010/'
 
@@ -36,7 +39,7 @@ const getCountFromServer = (url: string, query?: string): Promise<number> => {
  * @param url
  * @param query
  */
-const getFromServer = (url: string, query?: string): Promise<IapiPoemsResponse> => {
+export const getFromServer = (url: string, query?: string): Promise<IapiPoemsResponse> => {
   return new Promise<IapiPoemsResponse>((resolve, reject) => {
     const options = {
       params: {
@@ -55,6 +58,27 @@ const getFromServer = (url: string, query?: string): Promise<IapiPoemsResponse> 
   })
 }
 
+
+export const get = async () => {
+  const cc = await getInitialData(store)
+  setInitialPagination(cc, store);
+  getDataArray().then(dataResponse => {
+    if (dataResponse.code === 200) {
+      store.dispatch(addDataArray(dataResponse.data as unknown as Poem[]))
+    }
+  })
+}
+
+export const getStatistics = () => {
+  getFromServer(`${serverUrl}statistics`).then((data) => {
+    store.dispatch(addAllCategories((data.data! as unknown as Icategory[])))
+  })
+}
+
+const getDataArray = async () => {
+  let queries = constructQueryFromState(store.getState().query)
+  return await getFromServer(`${serverUrl}query`, queries.dataQuery)
+}
 /***
  * Δημιουργεί δυο queries, το data και το count (για αν μετρά πρώτα και μετά να ζητά τα δεδομένα)
  * @param query
@@ -92,7 +116,7 @@ const constructQueryFromState = (query: Query): { dataQuery: string, countQuery:
  * @param cc οι συνολικές εγγραφές
  * @param store
  */
-function setInitialPagination(cc: number, store) {
+export function setInitialPagination(cc: number, store) {
   const pag = Object.assign({}, store.getState().pagination)
   const {resultsPerPage, totalPages, page} = pag
 
@@ -118,23 +142,14 @@ function setInitialPagination(cc: number, store) {
  * Κατεβάζει από το σέρβερ τα αρχικά ποιήματα
  * @param store
  */
-export const getInitialData = async (store) => {
-  let queries = constructQueryFromState(store.getState().query)
+export const getInitialData = (store) => {
+  return new Promise<number>(async (resolve) => {
+    let queries = constructQueryFromState(store.getState().query)
 
-  let count = await getCountFromServer(`${serverUrl}query`, queries.countQuery)
-    //.then(response => console.log(response))
-    .catch(er => console.log(er))
-  // const {data} = count
-  const cc = count ? count : 0
-  setInitialPagination(cc, store);
-
-  queries = constructQueryFromState(store.getState().query)
-  let dataResponse = await getFromServer(`${serverUrl}query`, queries.dataQuery)
-  if (dataResponse.code === 200) {
-    store.dispatch(addDataArray(dataResponse.data as unknown as Poem[]))
-  }
-
-  console.log('store data', store.getState().data)
-
-  console.log('GET DATA TO START')
+    let count = await getCountFromServer(`${serverUrl}query`, queries.countQuery)
+      //.then(response => console.log(response))
+      .catch(er => console.log(er))
+    // const {data} = count
+    resolve(count ? count : 0)
+  })
 }

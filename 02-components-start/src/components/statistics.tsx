@@ -7,7 +7,7 @@ class Statistics extends React.Component<{ categories: Icategory[] | [] }> {
   renderStatistics() {
     const {categories} = this.props
     if (categories.length === 0) return <li>{waitForServer()}</li>
-    return ((categories as Icategory[]).map(cat => {
+    return ((categories as Icategory[]).filter(a => a.id !== 0).map(cat => {
         return <li key={cat.id}><strong>{cat.description}:</strong> {cat.cc} εγγραφές</li>
       })
     )

@@ -1,6 +1,7 @@
-import {ADD_CATEGORY, INC_CATEGORY_COUNT, RESET_CATEGORIES} from "../actions/category"
+import {ADD_ALL_CATEGORIES, ADD_CATEGORY, INC_CATEGORY_COUNT, RESET_CATEGORIES} from "../actions/category"
 import {IaddCategoryAction, Icategory, IincCategoryAction} from "../intefaces"
 import {Action} from "redux"
+import {IaddAllCategories} from "../intefaces/Icategory";
 
 const categories = (state: Array<Icategory> = [], action: Action) => {
   switch (action.type) {
@@ -19,6 +20,12 @@ const categories = (state: Array<Icategory> = [], action: Action) => {
     }
     case RESET_CATEGORIES:
       return []
+    case ADD_ALL_CATEGORIES:
+      let alfa = (action as IaddAllCategories).categories
+      alfa.unshift({id: 0, cc: 0, description: ''})
+      console.log('ALFA =', alfa)
+      return alfa
+
     default:
       return state
   }
