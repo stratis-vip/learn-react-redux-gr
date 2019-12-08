@@ -1,15 +1,42 @@
 <!-- index.html -->
 <html lang="el">
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Κείμενα Χριστοδούλου</title>
 </head>
 <body>
-<div id="header" class="container-fluid">
-	<h2 class="mainTitle">ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ΚΕΙΜΕΝΩΝ ΧΡΙΣΤΟΔΟΥΛΟΥ</h2>
-	<div class="subTitle">Πλήρης συλλογή λογοτεχνικών ακροβατισμών</div>
+<div id="header" class="container-fluid rel">
+    <h2 class="mainTitle">ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ΚΕΙΜΕΝΩΝ ΧΡΙΣΤΟΔΟΥΛΟΥ</h2>
+    <div class="subTitle">Πλήρης συλλογή λογοτεχνικών ακροβατισμών</div>
+    <div class="parent">
+        <div id="menu" class="rel menu text-left">
+            Απόκρυψη Επιλογών
+        </div>
+    </div>
+    <div style="height: 1px;"></div>
+
 </div>
 <div id="root"></div>
 <script src="./build/app.js"></script>
+<script>
+  menu = document.getElementById("menu")
+  menu.onclick = () => {
+    let left = document.getElementById('left')
+    let text = menu.innerText.trim()
+    console.log(text)
+    if (text === "Εμφάνιση επιλογών") {
+      console.log('if', text, text === "Εμφάνιση επιλογών")
+      left.hidden = false
+      menu.innerText = "Απόκρυψη Επιλογών"
+    } else {
+      console.log('else', text, text === "Εμφάνιση επιλογών")
+      left.hidden = true
+      menu.innerText = "Εμφάνιση επιλογών"
+    }
+  }
+</script>
 </body>
 
 </html>

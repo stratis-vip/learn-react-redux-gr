@@ -1,14 +1,16 @@
-import {IapiPoemsResponse, Icategory, Poem, Query} from "./intefaces";
+import {IapiPoemsResponse, Icategory, MainStore, Poem} from "./intefaces";
 import axios from 'axios'
-import {ORDER, SORT} from "./actions/filters";
+import {ORDER, resetFilters, SORT} from "./actions/filters";
 import {setPagination} from "./actions/pagination";
-import {addToQueryLimit, addToQueryOffset} from "./actions/query";
-import {addDataArray} from "./actions/data";
+import {addToQueryLimit, addToQueryOffset, resetQuery} from "./actions/query";
+import {addDataArray, clearData} from "./actions/data";
 import {addAllCategories} from "./actions/category";
 import store from "./store";
+import {resetSearch} from "./actions/search";
 
 
-const serverUrl = 'http://localhost:3010/'
+// const serverUrl = 'http://localhost:3010/'
+const serverUrl = 'http://test.texnopraksis.com/'
 
 /***
  * επιστρέφει από το σέρβερ πόσα ποιήματα υπάρχουνε με το query
@@ -67,11 +69,23 @@ export function getPoemsFromServer() {
   })
 }
 
+export const resetAllFiltersQueries = () => {
+  store.dispatch(resetSearch())
+  store.dispatch(resetFilters())
+  store.dispatch(resetQuery())
+  document.querySelectorAll('input').forEach(val => val.value = null)
+  getPoemsFromServer()
+}
+
 export const refreshDataFromServer = () => {
   getInitialData(store).then((cc: number) => {
     if (cc !== 0) {
       setInitialPagination(cc, store)
       getPoemsFromServer()
+    } else {
+      store.dispatch(clearData())
+      const resultsPerPage = store.getState().pagination.resultsPerPage
+      store.dispatch(setPagination({page: 1, resultsPerPage: resultsPerPage, results: 0, totalPages: 0}))
     }
   })
 }
@@ -84,7 +98,8 @@ export const getStatistics = () => {
 }
 
 export const getDataArray = async () => {
-  let queries = constructQueryFromState(store.getState().query)
+  let queries = constructQueryFromState(store.getState())
+  console.log(queries.dataQuery)
   return await getFromServer(`${serverUrl}query`, queries.dataQuery)
 }
 
@@ -97,22 +112,32 @@ const getSortText = (val: string) => {
   console.log('SORT.ASC=', SORT.ASC, val, SORT.ASC === val)
   return val === SORT.ASC ? ' ASC' : ' DESC'
 }
+
 /***
  * Δημιουργεί δυο queries, το data και το count (για αν μετρά πρώτα και μετά να ζητά τα δεδομένα)
- * @param query
+ * @param state
  */
-const constructQueryFromState = (query: Query): { dataQuery: string, countQuery: string } => {
+const constructQueryFromState = (state: MainStore): { dataQuery: string, countQuery: string } => {
+  const {query, search} = state
   const queryArray = []
   const type: string = query.type || 'SELECT'
   const what: string = query.what.length === 0 ? '*' : query.what.join(' ')
   const from: string = query.from.length === 0 ? 'keimena' : query.from.join(' ')
-  const where: string = query.where.length === 0 ? '' : 'WHERE ' + query.where.join(' ')
+  let where: string = query.where.length === 0 ? '' : 'WHERE ' + query.where.join(' ')
   const order: string = query.filters.order === ORDER.NO_ORDER ? '' : 'ORDER BY ' + getOrderText(query.filters.order)
   let sort: string = query.filters.sort === SORT.NO_SORT ? '' : getSortText(query.filters.sort)
   if (order === '') sort = ''
   queryArray.push(type)
   queryArray.push(what)
   queryArray.push(`FROM ${from}`)
+  if (search.text !== null) {
+    where += where.length > 0 ? ` AND keimeno LIKE '%${search.text}%'` : ` WHERE keimeno LIKE '%${search.text}%'`
+  } else {
+    if (search.number !== null) {
+      where += where.length > 0 ? ` AND keimeno_id = ${search.number}` : ` WHERE keimeno_id = ${search.number}`
+    }
+  }
+
   queryArray.push(where)
   queryArray.push(order)
   queryArray.push(sort)
@@ -163,7 +188,7 @@ export function setInitialPagination(cc: number, store) {
  */
 export const getInitialData = (store) => {
   return new Promise<number>((resolve) => {
-    let queries = constructQueryFromState(store.getState().query)
+    let queries = constructQueryFromState(store.getState())
 
     getCountFromServer(`${serverUrl}query`, queries.countQuery)
       .then(response => resolve(response))

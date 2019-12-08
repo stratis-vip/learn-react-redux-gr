@@ -14,6 +14,7 @@ import {
   ReplaceQueryFromAction,
   ReplaceQueryWhatAction,
   ReplaceWhereFromAction,
+  RESET_QUERY,
   SET_WHERE,
   SetQueryWhereAction,
   SQL_TYPES
@@ -73,6 +74,8 @@ const query = (state = startingQuery, action: Action) => {
       return Object.assign({}, state, {
         limit: (action as AddToQueryLimitAction).limit
       })
+    case RESET_QUERY:
+      return startingQuery
     default:
       return Object.assign({}, state, {
         filters: filters(state.filters, action)

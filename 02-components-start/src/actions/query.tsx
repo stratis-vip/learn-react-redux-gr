@@ -9,6 +9,7 @@ export const CLEAR_WHERE = 'CLEAR_WHERE'
 export const REPLACE_WHERE = 'REPLACE_WHERE'
 export const ADD_OFFSET = 'ADD_OFFSET'
 export const ADD_LIMIT = 'ADD_LIMIT'
+export const RESET_QUERY = 'RESET_QUERY'
 
 export enum SQL_TYPES {
     SELECT = 'SELECT'
@@ -81,11 +82,15 @@ export const replaceQueryWhere = (where: string): ReplaceWhereFromAction => ({
 })
 
 export const addToQueryOffset = (offset: number): AddToQueryOffsetAction => ({
-    type: ADD_OFFSET,
-    offset
+  type: ADD_OFFSET,
+  offset
 })
 
 export const addToQueryLimit = (limit: number): AddToQueryLimitAction => ({
-    type: ADD_LIMIT,
-    limit
+  type: ADD_LIMIT,
+  limit
+})
+
+export const resetQuery = (): Action => ({
+  type: RESET_QUERY
 })
