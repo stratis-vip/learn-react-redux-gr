@@ -36,7 +36,7 @@ const ResultsDescription = (props: { pagination: Pagination, setResultsPerPage: 
     <div className="text-center">
       <div className="alert alert-info m-0">
         <p className="m-0">
-          {pagination.results !== 0 ? `Βρέθηκαν ${pagination.results} εγγραφές.` : `Δεν υπάρχουν αποτελέσματα!`}
+          {pagination.results === 1 ? `Βρέθηκε μία εγγραφή.` : pagination.results !== 0 ? `Βρέθηκαν ${pagination.results} εγγραφές.` : `Δεν υπάρχουν αποτελέσματα!`}
         </p>
         <p className="d-inline mr-2">
           Αποτελ. ανα σελίδα </p>

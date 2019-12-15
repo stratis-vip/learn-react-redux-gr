@@ -16,13 +16,12 @@ body {
 #header {
   background-color: var(--banner-bgcolor);
   color: white;
-  margin: 0 0 1rem 0;
   text-align: center;
 }
 
 .mainTitle {
-  margin: 0;
-  padding: 1rem;
+  /*margin: 0;*/
+  /*padding: 1rem;*/
   font-family: "TypeWriter";
 }
 
@@ -30,16 +29,6 @@ body {
   margin: -0.7rem;
   padding-bottom: 1rem;
   font-family: "TypeWriter";
-}
-.card-header {
-  background-color: var(--card-header-bgcolor);
-}
-.card-body {
-  height: 0;
-  overflow: hidden;
-  padding: 0;
-  transition: all 0.3s;
-  background-color: var(--card-body-bgcolor);
 }
 
 /* .poems-container{
@@ -68,11 +57,11 @@ body {
 
 @font-face {
   font-family: TypeWriter;
-  src: url(./fonts/BPtypewriteDamaged.otf);
+  src: url(fonts/BPtypewriteDamaged.otf);
 }
 @font-face {
   font-family: OpenSansCondensed;
-  src: url(./fonts/OpenSansCondLight.woff2);
+  src: url(fonts/OpenSansCondLight.woff2);
 }
 
 .more {display: none;}
@@ -82,7 +71,7 @@ button {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.card-header, .form-check-inline, .form-check-input,
+ .form-check-inline, .form-check-input,
 #category ul > li, #tax, #ascdesc {
     cursor: pointer;
 }
@@ -94,22 +83,9 @@ button {
     width: auto;
 }
 
-.hamburger {
-    background-color: #e8e6e8;
-    width: 35px;
-    height: 5px;
-    margin: 6px 0;
-
-}
-
 .menu {
     cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
-}
-
-.ttip {
-    position: absolute;
-    visibility: visible;
 }
 
 .poem {
@@ -118,4 +94,32 @@ button {
 
 .epikefalida {
     background-color: cornflowerblue;
+}
+
+.overlay{
+    background-color:#EFEFEF;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0px;
+    left: 0px;
+    opacity: .7; /* in FireFox */
+    filter: alpha(opacity=50); /* in IE */
+}
+
+.centered {
+    position: relative;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.navbar, .bg-banner{
+    background-color: var(--banner-bgcolor);
+}
+
+nav a , .navbar-text a{
+    text-decoration: none;
+    color: white;
 }

@@ -4,7 +4,13 @@ import {bindActionCreators} from "redux"
 import {connect} from 'react-redux'
 import {addSearchByNumber, addSearchByText} from "../actions/search"
 
-const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
+interface LocalProps {
+  search: Search
+  searchText: any
+  searchNum: any
+}
+
+const Search = (props: LocalProps) => {
   const {searchText, searchNum} = props
   const onTextBtnPress = () => {
 
@@ -31,12 +37,14 @@ const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
   const textBtn = <button data-key="text" className="btn btn-primary form-control"
                           onClick={onTextBtnPress}>
     Καταχώρηση</button> as JSX.Element
+
   const numBtn = <button data-key="num" className="btn btn-primary form-control"
                          onClick={onNumBtnPress}>Καταχώρηση</button>
 
-
   return (
-    <form action="#/">
+    <div>
+      <h5>Εύρεση:</h5>
+
       <div className="form-group row">
         <input data-key="inText" className="ml-2 col form-control" type="text"
                placeholder="Κείμενο προς αναζήτηση"
@@ -53,13 +61,13 @@ const Search = (props: { search: Search, searchText: any, searchNum: any }) => {
           {numBtn}
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 
 const mapStateToProps = (state: MainStore) => {
   return {
-    search: state.search
+    search: state.search,
   }
 }
 

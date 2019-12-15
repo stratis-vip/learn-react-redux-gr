@@ -1,6 +1,6 @@
 import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
-import App from './app'
+import PoemsViewApp from './poemsViewApp'
 import {mockStore} from '../store'
 import {act} from 'react-dom/test-utils'
 import {Provider} from 'react-redux'
@@ -24,7 +24,7 @@ it('Δημιουργείται κανονικά', () => {
   act(() => {
     render(
       <Provider store={mockStore}>
-        <App/>
+        <PoemsViewApp/>
       </Provider>, container)
   })
 

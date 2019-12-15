@@ -7,10 +7,12 @@ import {addDataArray, clearData} from "./actions/data";
 import {addAllCategories} from "./actions/category";
 import store from "./store";
 import {resetSearch} from "./actions/search";
+import {MODE, setMode} from "./actions/mode";
+import {debug} from "./stats";
 
 
-// const serverUrl = 'http://localhost:3010/'
-const serverUrl = 'http://test.texnopraksis.com/'
+const serverUrl = 'http://localhost:3010/'
+// const serverUrl = 'http://test.texnopraksis.com/'
 
 /***
  * επιστρέφει από το σέρβερ πόσα ποιήματα υπάρχουνε με το query
@@ -18,6 +20,7 @@ const serverUrl = 'http://test.texnopraksis.com/'
  * @param query
  */
 const getCountFromServer = (url: string, query?: string): Promise<number> => {
+  
   return new Promise<number>((resolve, reject) => {
     const options = {
       params: {
@@ -42,6 +45,7 @@ const getCountFromServer = (url: string, query?: string): Promise<number> => {
  * @param query
  */
 export const getFromServer = (url: string, query?: string): Promise<IapiPoemsResponse> => {
+  
   return new Promise<IapiPoemsResponse>((resolve, reject) => {
     const options = {
       params: {
@@ -62,22 +66,27 @@ export const getFromServer = (url: string, query?: string): Promise<IapiPoemsRes
 
 
 export function getPoemsFromServer() {
+  
   getDataArray().then(dataResponse => {
     if (dataResponse.code === 200) {
       store.dispatch(addDataArray(dataResponse.data as unknown as Poem[]))
+      store.dispatch(setMode(MODE.NORMAL))
     }
   })
 }
 
 export const resetAllFiltersQueries = () => {
+  
   store.dispatch(resetSearch())
   store.dispatch(resetFilters())
   store.dispatch(resetQuery())
   document.querySelectorAll('input').forEach(val => val.value = null)
-  getPoemsFromServer()
+  refreshDataFromServer()
 }
 
 export const refreshDataFromServer = () => {
+  
+  store.dispatch(setMode(MODE.SEND))
   getInitialData(store).then((cc: number) => {
     if (cc !== 0) {
       setInitialPagination(cc, store)
@@ -86,30 +95,31 @@ export const refreshDataFromServer = () => {
       store.dispatch(clearData())
       const resultsPerPage = store.getState().pagination.resultsPerPage
       store.dispatch(setPagination({page: 1, resultsPerPage: resultsPerPage, results: 0, totalPages: 0}))
+      store.dispatch(setMode(MODE.NORMAL))
     }
   })
 }
 
 
 export const getStatistics = () => {
+  
   getFromServer(`${serverUrl}statistics`).then((data) => {
     store.dispatch(addAllCategories((data.data! as unknown as Icategory[])))
   })
 }
 
 export const getDataArray = async () => {
+  
   let queries = constructQueryFromState(store.getState())
-  console.log(queries.dataQuery)
+  store.dispatch(setMode(MODE.FETCH))
   return await getFromServer(`${serverUrl}query`, queries.dataQuery)
 }
 
 const getOrderText = (val: string) => {
-  console.log('ORDER.BY_DATE=', ORDER.BY_DATE, val, ORDER.BY_DATE === val)
   return val === ORDER.BY_DATE ? 'imnia_auth' : 'id'
 }
 
 const getSortText = (val: string) => {
-  console.log('SORT.ASC=', SORT.ASC, val, SORT.ASC === val)
   return val === SORT.ASC ? ' ASC' : ' DESC'
 }
 
@@ -118,6 +128,7 @@ const getSortText = (val: string) => {
  * @param state
  */
 const constructQueryFromState = (state: MainStore): { dataQuery: string, countQuery: string } => {
+  
   const {query, search} = state
   const queryArray = []
   const type: string = query.type || 'SELECT'
@@ -151,7 +162,7 @@ const constructQueryFromState = (state: MainStore): { dataQuery: string, countQu
   const ctStr = countQuery.map((que, index) => {
     if (index < 4) return que
   })
-  console.log(arStr, '   ', ctStr.join(' '))
+
   return {dataQuery: arStr, countQuery: ctStr.join(' ')}
 }
 
@@ -161,6 +172,7 @@ const constructQueryFromState = (state: MainStore): { dataQuery: string, countQu
  * @param store
  */
 export function setInitialPagination(cc: number, store) {
+  
   const pag = Object.assign({}, store.getState().pagination)
   const {resultsPerPage, totalPages, page} = pag
 
@@ -187,6 +199,7 @@ export function setInitialPagination(cc: number, store) {
  * @param store
  */
 export const getInitialData = (store) => {
+  
   return new Promise<number>((resolve) => {
     let queries = constructQueryFromState(store.getState())
 

@@ -2,10 +2,10 @@ import React from "react";
 import {Icategory, MainStore, Query, Search} from "../intefaces";
 import {connect} from 'react-redux'
 
-interface locaProps {
+interface localProps {
   query: Query
   categories: Icategory[]
-  search: Search
+  search: Search,
 }
 
 const getSearchParamaters = (text?: string, num?: number) => {
@@ -20,32 +20,31 @@ const getSearchParamaters = (text?: string, num?: number) => {
   }
 }
 
-const updateInfo = (props: locaProps) => {
+const updateInfo = (props: localProps): JSX.Element => {
   const {categories} = props
 
   if (categories.length > 0) {
     const {text, number} = props.search
     const {cat, order, sort} = props.query.filters
     const description = categories[cat] !== undefined ? categories[cat].description : ''
-    return (<div>
+    return (<div className="alert text-center mb-0">
       <strong>Έρευνα σε</strong>«{description}»
       <br/><strong>Ταξινόμηση:</strong> «{order} - {sort}»{getSearchParamaters(text, number)}
     </div>)
+  } else {
+    return null
   }
-  return ''
 }
 
-const QueryDescription = (props: locaProps) => (
-  <div className="alert text-center mb-0">
-    {updateInfo(props)}
-  </div>
+const QueryDescription = (props: localProps) => (
+  updateInfo(props)
 )
 
 const mapStateToProps = (state: MainStore) => (
   {
     query: state.query,
     categories: state.categories,
-    search: state.search
+    search: state.search,
   })
 
 export default connect(mapStateToProps)(QueryDescription)

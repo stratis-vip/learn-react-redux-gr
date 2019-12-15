@@ -1,0 +1,33 @@
+import React from "react";
+import {BrowserRouter, Route} from 'react-router-dom'
+import PoemsViewApp from "./poemsViewApp";
+import Login from './login';
+import PoemNavbar from "./poemNavbar";
+import ShowOptions from "./showoptions";
+import Help from "./help";
+import ShowStatistics from "./ShowStatistics";
+
+
+const App = (): JSX.Element => {
+  // let history = useHistory();
+  // console.log(history)
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [history.location.pathname]);
+
+  return (
+    <BrowserRouter>
+      <PoemNavbar/>
+      <Route exact path='/' component={PoemsViewApp}/>
+      <Route exact path='/index.html' component={PoemsViewApp}/>
+      <Route  path='/home' component={PoemsViewApp}/>
+      <Route  path='/login' component={Login}/>
+      <Route  path='/options' component={ShowOptions}/>
+      <Route  path='/help' component={Help} />
+      <Route  path='/statistics' component={ShowStatistics} />
+
+    </BrowserRouter>
+  )
+}
+
+export default App

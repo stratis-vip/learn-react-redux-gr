@@ -1,23 +1,24 @@
 /* ./src/app.tsx */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/app'
 import store from './store'
 import {Provider} from 'react-redux'
 import {getStatistics, refreshDataFromServer} from "./apiConnect";
+import App from './components/app'
 
-// import 'bootstrap/dist/css/bootstrap.css'
-// import '../Public/style.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../Public/style.css'
 
 
-// store.subscribe(() => console.log(store.getState()))
+store.subscribe(() => console.log(store.getState()))
 
-refreshDataFromServer()
 getStatistics()
+refreshDataFromServer()
+
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <App />
   </Provider>
   , document.getElementById('root')
 )

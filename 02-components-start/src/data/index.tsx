@@ -1,6 +1,7 @@
 import {MainStore} from "../intefaces";
 import {Action} from "redux";
-import {ORDER, SORT} from "../actions/filters";
+import { ORDER, SORT} from "../actions/filters";
+import {MODE} from "../actions/mode"
 
 const mData = (state: MainStore, action: Action) => {
   return {
@@ -11,6 +12,7 @@ const mData = (state: MainStore, action: Action) => {
       {"id": 4, "cc": 2, "description": "Μεγάλες απορίες"},
       {"id": 5, "cc": 23, "description": "Της ζωής τα δεδομένα"}
     ],
+    mode: MODE.NORMAL,
     query: {
       filters: {
         cat: 0,
@@ -54,12 +56,12 @@ const mData = (state: MainStore, action: Action) => {
                 eksigisi: null
             }
         ],
-        pagination: {
+    pagination: {
             page: 1,
             totalPages: 1,
             resultsPerPage: 10,
             results: 3
-        }
-    }
+        },
+    route: '/home'}
 }
 export default mData

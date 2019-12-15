@@ -23,30 +23,30 @@ afterEach(() => {
 })
 
 it('Δημιουργείται κανονικά', () => {
-    act(() => {
-        render(
-            <Provider store={mockStore}>
-                <Statistics />
-            </Provider>, container)
-    })
-    expect(container.textContent).toBe('Αναμονή φόρτωσης δεδομένων από τον σέρβερ')
+  act(() => {
+    render(
+      <Provider store={mockStore}>
+        <Statistics/>
+      </Provider>, container)
+  })
+  expect(container.textContent).toBe('Αναμονή φόρτωσης δεδομένων από τον σέρβερ')
 })
 
 it('Δημιουργείται κανονικά', () => {
-    act(() => {
-        render(
-            <Provider store={mockStore}>
-                <Statistics />
-            </Provider>, container)
-    })
-    mockStore.dispatch(addCategory(cat1))
-    expect(container.textContent).toBe(`${cat1.description}: ${cat1.cc} εγγραφές`)
-   
-    mockStore.dispatch(addCategory(cat2))
-    mockStore.dispatch(addCategory(cat3))
-    expect(mockStore.getState().categories.length).toBe(3)
-    mockStore.dispatch(resetCategories())
-    expect(container.textContent).toBe(`Αναμονή φόρτωσης δεδομένων από τον σέρβερ`)
+  act(() => {
+    render(
+      <Provider store={mockStore}>
+        <Statistics/>
+      </Provider>, container)
+  })
+  mockStore.dispatch(addCategory(cat1))
+  expect(container.textContent).toBe(`${cat1.description}: ${cat1.cc} εγγραφές`)
+
+  mockStore.dispatch(addCategory(cat2))
+  mockStore.dispatch(addCategory(cat3))
+  expect(mockStore.getState().categories.length).toBe(3)
+  mockStore.dispatch(resetCategories())
+  expect(container.textContent).toBe(`Αναμονή φόρτωσης δεδομένων από τον σέρβερ`)
 })
 
 

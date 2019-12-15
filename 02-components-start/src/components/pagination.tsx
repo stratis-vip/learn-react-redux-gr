@@ -12,6 +12,7 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any, setOffset:
 
   const {totalPages, page} = props.pagination
   const {setNewPage, setOffset} = props
+
   const prevPages = (first: boolean) => {
     let id = page > 1 ? page - 1 : page
     let velos = `«`;
@@ -45,11 +46,14 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any, setOffset:
 
   const getPage = ev => {
     let newPage = parseInt(ev.target.dataset['key']);
+    goToPage(newPage)
+  };
+
+  const goToPage = (newPage: number): void => {
     setNewPage(newPage)
     setOffset((newPage - 1) * props.pagination.resultsPerPage)
     getPoemsFromServer()
-  };
-
+  }
 
   function createLi(num: number) {
     return <li key={num}
@@ -65,6 +69,7 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any, setOffset:
         return (makePages())
       } else {
         let items = []
+        // items.push(makeFirst(true))
         items.push(prevPages(true))
         let left =
           totalPages - page > paginatorWidth
@@ -84,17 +89,26 @@ const Pagination = (props: { pagination: Pagination, setNewPage: any, setOffset:
         for (let i = afterDotPage; i != totalPages + 1; ++i) {
           items.push(createLi(i))
         }
-        if (totalPages > 1)
+        if (totalPages > 1) {
           items.push(prevPages(false))
+          //items.push(makeFirst(false))
+        }
         return items
       }
     }
   }
 
+  const clStart = page === 1 ? " disabled" : ''
+
   return (
     <div className="text-center">
       <nav>
         <ul className="pagination justify-content-center mt-2">
+          {totalPages > 6 ?
+            <li className={"page-item" + clStart} hidden={page > 1 ? false : true}>
+              <a className="page-link" href="#/"
+                 onClick={goToPage.bind(null, 1)}>1</a>
+            </li> : null}
           {renderPages()}
         </ul>
       </nav>

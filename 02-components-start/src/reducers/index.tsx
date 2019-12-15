@@ -7,16 +7,11 @@ import { MainStore } from '../intefaces'
 import pagination from './pagination'
 import search from './search'
 import data from './data'
-
-
+import mode from "./mode"
+import route from './route'
 
 const rootReducer:Reducer<MainStore> = combineReducers(
-    {categories, query, search, data, pagination }//, dataRes}
+    {categories, query, search, data, pagination, mode, route }//, dataRes}
 )
 
-// const rootReducer:Reducer<MainStore> = combineReducers(
-//     {mData}//, dataRes}
-// )
 export default rootReducer
-
-//export type AppState = ReturnType<typeof rootReducer>

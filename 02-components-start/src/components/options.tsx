@@ -56,22 +56,26 @@ const Options = (props: {
     )
   }
 
+  const renderSorts = (): JSX.Element => (
+    <div hidden={categories.length === 0} className="mt-3">
+      <select className="form-control" id="tax" defaultValue={order}
+              onChange={changeOrderHandler}>
+        {renderOrder()}
+      </select>
+      <select className="form-control mt-3" id="ascdesc" defaultValue={sort}
+              onChange={changeSortHandler}>
+        {renderTax()}
+      </select>
+
+    </div>
+  )
+
   return (
     <form id="category" className="form-check" action="">
       <ul className="list-unstyled mb-0">
         {/*{categories.length !== 0 ? firstRow() : null}*/}
         {renderFilters()}
-        <div hidden={categories.length === 0} className="mt-3">
-          <select className="form-control" id="tax" defaultValue={order}
-                  onChange={changeOrderHandler}>
-            {renderOrder()}
-          </select>
-          <select className="form-control mt-3" id="ascdesc" defaultValue={sort}
-                  onChange={changeSortHandler}>
-            {renderTax()}
-          </select>
-
-        </div>
+        {renderSorts()}
       </ul>
     </form>
   )
@@ -81,7 +85,7 @@ const Options = (props: {
 const mapStateToProps = (state: MainStore) => {
   return {
     categories: state.categories,
-    filters: state.query.filters
+    filters: state.query.filters,
   }
 }
 
