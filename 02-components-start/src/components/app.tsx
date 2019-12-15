@@ -6,6 +6,7 @@ import PoemNavbar from "./poemNavbar";
 import ShowOptions from "./showoptions";
 import Help from "./help";
 import ShowStatistics from "./ShowStatistics";
+import Manage from "./manage";
 
 
 const App = (): JSX.Element => {
@@ -25,6 +26,8 @@ const App = (): JSX.Element => {
       <Route  path='/options' component={ShowOptions}/>
       <Route  path='/help' component={Help} />
       <Route  path='/statistics' component={ShowStatistics} />
+      <Route  path='/manage' component={Manage} />
+
 
     </BrowserRouter>
   )

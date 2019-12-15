@@ -9,4 +9,5 @@ export interface MainStore {
   pagination: Pagination
   mode: MODE
   route:string
+  authorized: boolean
 }

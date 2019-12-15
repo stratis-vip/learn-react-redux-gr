@@ -62,6 +62,8 @@ const mData = (state: MainStore, action: Action) => {
             resultsPerPage: 10,
             results: 3
         },
-    route: '/home'}
+    route: '/home',
+    authorized: false
+  }
 }
 export default mData

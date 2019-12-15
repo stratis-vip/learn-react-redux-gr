@@ -8,9 +8,10 @@ import {bindActionCreators} from "redux";
 
 interface LocalProps {
   route: string
+  authorized: boolean
 }
 
-const PoemNavbar = (props: { route: string, setPage: any }): JSX.Element => {
+const PoemNavbar = (props: { route: string, authorized:boolean, setPage: any }): JSX.Element => {
   let history = useHistory();
   useEffect(() => {
     console.log(history.location.pathname)
@@ -70,6 +71,7 @@ const PoemNavbar = (props: { route: string, setPage: any }): JSX.Element => {
             <Navbar.Text className="ml-2">{getLink("/options", "Εμφάνιση Επιλογών")}</Navbar.Text>
             <Navbar.Text className="ml-2">{getLink("/help", "Οδηγίες")}</Navbar.Text>
             <Navbar.Text className="ml-2">{getLink("/statistics", "Στατιστικά στοιχεία")}</Navbar.Text>
+            {props.authorized ? <Navbar.Text className="ml-2">{getLink("/manage", "Διαχείριση")}</Navbar.Text>: null}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -79,7 +81,8 @@ const PoemNavbar = (props: { route: string, setPage: any }): JSX.Element => {
 
 const mapStateToProps = (state: MainStore): LocalProps => {
   return {
-    route: state.route
+    route: state.route,
+    authorized: state.authorized
   }
 }
 

@@ -1,15 +1,28 @@
-import {IapiPoemsResponse, Icategory, MainStore, Poem} from "./intefaces";
+import { IapiPoemsResponse, Icategory, MainStore, Poem } from "./intefaces";
 import axios from 'axios'
-import {ORDER, resetFilters, SORT} from "./actions/filters";
-import {setPagination} from "./actions/pagination";
-import {addToQueryLimit, addToQueryOffset, resetQuery} from "./actions/query";
-import {addDataArray, clearData} from "./actions/data";
-import {addAllCategories} from "./actions/category";
+import { ORDER, resetFilters, SORT } from "./actions/filters";
+import { setPagination } from "./actions/pagination";
+import { addToQueryLimit, addToQueryOffset, resetQuery } from "./actions/query";
+import { addDataArray, clearData } from "./actions/data";
+import { addAllCategories } from "./actions/category";
 import store from "./store";
-import {resetSearch} from "./actions/search";
-import {MODE, setMode} from "./actions/mode";
-import {debug} from "./stats";
+import { resetSearch } from "./actions/search";
+import { MODE, setMode } from "./actions/mode";
+import { Credentials } from "./intefaces/api";
 
+export const sendToCheck = (cr: Credentials):Promise<{}> => {
+  return new Promise ((resolve,reject)=> {
+    axios.post('http://localhost:3010/login', cr)
+    .then(value => {
+      resolve(value)
+    })
+    .catch(er => {
+      reject(er)
+    })
+  })
+  
+
+}
 
 const serverUrl = 'http://localhost:3010/'
 // const serverUrl = 'http://test.texnopraksis.com/'
@@ -20,7 +33,7 @@ const serverUrl = 'http://localhost:3010/'
  * @param query
  */
 const getCountFromServer = (url: string, query?: string): Promise<number> => {
-  
+
   return new Promise<number>((resolve, reject) => {
     const options = {
       params: {
@@ -45,7 +58,7 @@ const getCountFromServer = (url: string, query?: string): Promise<number> => {
  * @param query
  */
 export const getFromServer = (url: string, query?: string): Promise<IapiPoemsResponse> => {
-  
+
   return new Promise<IapiPoemsResponse>((resolve, reject) => {
     const options = {
       params: {
@@ -66,7 +79,7 @@ export const getFromServer = (url: string, query?: string): Promise<IapiPoemsRes
 
 
 export function getPoemsFromServer() {
-  
+
   getDataArray().then(dataResponse => {
     if (dataResponse.code === 200) {
       store.dispatch(addDataArray(dataResponse.data as unknown as Poem[]))
@@ -76,7 +89,7 @@ export function getPoemsFromServer() {
 }
 
 export const resetAllFiltersQueries = () => {
-  
+
   store.dispatch(resetSearch())
   store.dispatch(resetFilters())
   store.dispatch(resetQuery())
@@ -85,7 +98,7 @@ export const resetAllFiltersQueries = () => {
 }
 
 export const refreshDataFromServer = () => {
-  
+
   store.dispatch(setMode(MODE.SEND))
   getInitialData(store).then((cc: number) => {
     if (cc !== 0) {
@@ -94,7 +107,7 @@ export const refreshDataFromServer = () => {
     } else {
       store.dispatch(clearData())
       const resultsPerPage = store.getState().pagination.resultsPerPage
-      store.dispatch(setPagination({page: 1, resultsPerPage: resultsPerPage, results: 0, totalPages: 0}))
+      store.dispatch(setPagination({ page: 1, resultsPerPage: resultsPerPage, results: 0, totalPages: 0 }))
       store.dispatch(setMode(MODE.NORMAL))
     }
   })
@@ -102,14 +115,14 @@ export const refreshDataFromServer = () => {
 
 
 export const getStatistics = () => {
-  
+
   getFromServer(`${serverUrl}statistics`).then((data) => {
     store.dispatch(addAllCategories((data.data! as unknown as Icategory[])))
   })
 }
 
 export const getDataArray = async () => {
-  
+
   let queries = constructQueryFromState(store.getState())
   store.dispatch(setMode(MODE.FETCH))
   return await getFromServer(`${serverUrl}query`, queries.dataQuery)
@@ -128,8 +141,8 @@ const getSortText = (val: string) => {
  * @param state
  */
 const constructQueryFromState = (state: MainStore): { dataQuery: string, countQuery: string } => {
-  
-  const {query, search} = state
+
+  const { query, search } = state
   const queryArray = []
   const type: string = query.type || 'SELECT'
   const what: string = query.what.length === 0 ? '*' : query.what.join(' ')
@@ -163,7 +176,7 @@ const constructQueryFromState = (state: MainStore): { dataQuery: string, countQu
     if (index < 4) return que
   })
 
-  return {dataQuery: arStr, countQuery: ctStr.join(' ')}
+  return { dataQuery: arStr, countQuery: ctStr.join(' ') }
 }
 
 /**
@@ -172,9 +185,9 @@ const constructQueryFromState = (state: MainStore): { dataQuery: string, countQu
  * @param store
  */
 export function setInitialPagination(cc: number, store) {
-  
+
   const pag = Object.assign({}, store.getState().pagination)
-  const {resultsPerPage, totalPages, page} = pag
+  const { resultsPerPage, totalPages, page } = pag
 
   pag.results = cc
   let rpp = resultsPerPage === 0 ? 10 : resultsPerPage
@@ -199,7 +212,7 @@ export function setInitialPagination(cc: number, store) {
  * @param store
  */
 export const getInitialData = (store) => {
-  
+
   return new Promise<number>((resolve) => {
     let queries = constructQueryFromState(store.getState())
 
