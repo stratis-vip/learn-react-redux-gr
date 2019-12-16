@@ -35,9 +35,10 @@ export const addCategory = (category: Icategory): IaddCategoryAction => ({
  * Προσθέτει 1 στη ποσότητα ποιημάτων της κατηγορίας categoryId
  * @param categoryId
  */
-export const incCategory = (categoryId: number): IincCategoryAction => ({
+export const incCategory = (categoryId: number, newMax?: number): IincCategoryAction => ({
   type: INC_CATEGORY_COUNT,
-  categoryId
+  categoryId,
+  newMax
 })
 
 /***

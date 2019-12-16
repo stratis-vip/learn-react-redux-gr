@@ -1,7 +1,7 @@
-import {ADD_ALL_CATEGORIES, ADD_CATEGORY, INC_CATEGORY_COUNT, RESET_CATEGORIES} from "../actions/category"
-import {IaddCategoryAction, Icategory, IincCategoryAction} from "../intefaces"
-import {Action} from "redux"
-import {IaddAllCategories} from "../intefaces/Icategory";
+import { ADD_ALL_CATEGORIES, ADD_CATEGORY, INC_CATEGORY_COUNT, RESET_CATEGORIES } from "../actions/category"
+import { IaddCategoryAction, Icategory, IincCategoryAction } from "../intefaces"
+import { Action } from "redux"
+import { IaddAllCategories } from "../intefaces/Icategory";
 
 const categories = (state: Array<Icategory> = [], action: Action) => {
   switch (action.type) {
@@ -13,6 +13,11 @@ const categories = (state: Array<Icategory> = [], action: Action) => {
       newState.map(a => {
         if (a.id === (action as IincCategoryAction).categoryId) {
           a.cc += 1
+          if ((action as IincCategoryAction).newMax) {
+            a.max = (action as IincCategoryAction).newMax
+          } else {
+            a.max += 1
+          }
         }
         return a
       })
@@ -22,7 +27,7 @@ const categories = (state: Array<Icategory> = [], action: Action) => {
       return []
     case ADD_ALL_CATEGORIES:
       let alfa = (action as IaddAllCategories).categories
-      alfa.unshift({id: 0, cc: 0, description: 'Όλες οι κατηγορίες'})
+      alfa.unshift({ id: 0, cc: 0, description: 'Όλες οι κατηγορίες', max: 0 })
       return alfa
 
     default:
@@ -30,4 +35,4 @@ const categories = (state: Array<Icategory> = [], action: Action) => {
   }
 }
 
-  export default categories
+export default categories

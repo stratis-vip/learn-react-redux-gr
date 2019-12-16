@@ -7,9 +7,9 @@ import mockStore from '../store'
 import {addCategory, resetCategories} from '../actions/category'
 import {Icategory} from '../intefaces'
 
-const cat1: Icategory = {id: 1, description: "Ποιητικά", cc: 34}
-const cat2: Icategory = {id: 2, description: "Λογοπλοκίες", cc: 215}
-const cat3: Icategory = {id: 3, description: "Διάφορα", cc: 894}
+const cat1: Icategory = {id: 1, description: "Ποιητικά", cc: 34, max: 123}
+const cat2: Icategory = {id: 2, description: "Λογοπλοκίες", cc: 215, max: 123}
+const cat3: Icategory = {id: 3, description: "Διάφορα", cc: 894, max: 123}
 let container = null
 beforeEach(() => {
   container = document.createElement("div")

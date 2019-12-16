@@ -6,11 +6,11 @@ import {MODE} from "../actions/mode"
 const mData = (state: MainStore, action: Action) => {
   return {
     categories: [
-      {"id": 1, "cc": 411, "description": "Ποιητικά"},
-      {"id": 2, "cc": 157, "description": "Λογοπλοκίες"},
-      {"id": 3, "cc": 2, "description": "Συνεργατικά"},
-      {"id": 4, "cc": 2, "description": "Μεγάλες απορίες"},
-      {"id": 5, "cc": 23, "description": "Της ζωής τα δεδομένα"}
+      {"id": 1, "cc": 411, "description": "Ποιητικά", "max": 398},
+      {"id": 2, "cc": 157, "description": "Λογοπλοκίες", "max": 127},
+      {"id": 3, "cc": 2, "description": "Συνεργατικά", "max": 2 },
+      {"id": 4, "cc": 2, "description": "Μεγάλες απορίες", "max": 2},
+      {"id": 5, "cc": 23, "description": "Της ζωής τα δεδομένα", "max": 23}
     ],
     mode: MODE.NORMAL,
     query: {

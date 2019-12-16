@@ -5,6 +5,7 @@ export interface Icategory {
   id: number
   description: string
   cc: number
+  max: number
 }
 
 export interface IaddCategoryAction extends Action {
@@ -13,6 +14,7 @@ export interface IaddCategoryAction extends Action {
 
 export interface IincCategoryAction extends Action {
   categoryId: number
+  newMax?: number
 }
 
 export interface IaddAllCategories extends Action {

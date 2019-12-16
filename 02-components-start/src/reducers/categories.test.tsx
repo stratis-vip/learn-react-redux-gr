@@ -18,7 +18,7 @@ test("Store must exists", () => {
 
 describe("Categories Test", () => {
     it("Add one Category", () => {
-        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
+        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320, max: 123 }))
         const category = store.getState().categories[0]
         expect(category.id).toBe(1)
         expect(category.cc).toBe(320)
@@ -26,9 +26,9 @@ describe("Categories Test", () => {
     })
 
     it("Add two Categories", () => {
-        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
+        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320, max: 123 }))
         store.dispatch(
-            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
+            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207, max: 123 })
         )
         const cat = store.getState().categories
         expect(cat[0].id).toBe(1)
@@ -40,9 +40,9 @@ describe("Categories Test", () => {
     })
 
     it("Increase Category cc", () => {
-        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
+        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320, max: 123 }))
         store.dispatch(
-            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
+            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207, max: 123 })
         )
         store.dispatch(incCategory(1))
         store.dispatch(incCategory(2))
@@ -56,9 +56,9 @@ describe("Categories Test", () => {
     })
 
     it("Reset", () => {
-        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320 }))
+        store.dispatch(addCategory({ id: 1, description: "Ποιητικά", cc: 320, max: 123 }))
         store.dispatch(
-            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207 })
+            addCategory({ id: 2, description: "Λογοπλοκίες", cc: 207, max: 123 })
         )
         store.dispatch(incCategory(1))
         store.dispatch(incCategory(2))

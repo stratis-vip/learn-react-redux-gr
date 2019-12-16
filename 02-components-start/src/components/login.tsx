@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { setAuthorize } from '../actions/authorize'
 import { connect } from 'react-redux'
 import { MainStore } from "../intefaces";
-import ButtonFactory from "../btnFactory";
+import ButtonFactory, { ButtonIfFactory } from "../btnFactory";
 
 interface Auth {
   email: string
@@ -29,14 +29,18 @@ const getValues = (): Credentials => {
 
 
 const Login = (props: { authorized: boolean, setAuth: any }) => {
-  const handleClick = () => {
-    sendToCheck(getValues())
-      .then(value => {
-        console.log(value)
-        const { email } = (value as Resp).data
-        if (email !== undefined) { props.setAuth(true) }
+  const handleClick = (): Promise<boolean> => {
+    return new Promise(async (resolve) => {
+      const val = await sendToCheck(getValues())
+      .catch(er => {
+        showError(er.message)
+        resolve(false)
       })
-      .catch(er => showError(er.message))
+    console.log(val)
+    const { email } = (val as Resp).data
+    props.setAuth(email !== undefined)
+    resolve(email !== undefined)
+    })
   }
 
   const showError = (error) => {
@@ -49,14 +53,13 @@ const Login = (props: { authorized: boolean, setAuth: any }) => {
     <div className="container-fluid">
       <div className="hidden-xs col-sm-4">-</div>
       <div className="col-xs-12 col-sm-4 light">
-        <h3 className="text-center">{"title"}</h3>
+        <h3 className="text-center">Σύνδεση Διαχειριστή</h3>
         <div className="alert alert-danger" role="alert"
           hidden></div>
-        {/* <form action="https://enubgkdcnpcci.x.pipedream.net" method="post"> */}
         <div>
           <div className="form-group">
-            <label htmlFor="email">Όνομα μέλους</label>
-            <input className="form-control" type="text" name="email" placeholder="Όνομα μέλους"
+            <label htmlFor="email">Διεύθυνση email</label>
+            <input className="form-control" type="text" name="email" placeholder="Διεύθυνση email"
             />
           </div>
           <div className="form-group">
@@ -69,15 +72,10 @@ const Login = (props: { authorized: boolean, setAuth: any }) => {
           <div className="form-group">
             <div className="form-group">
               <div className="text-center">
-                <ButtonFactory className={'btn-primary'} title="Σύνδεση" url='/manage' func={handleClick} />
-                {/* <input className="btn btn-primary"
-                   type="submit"
-                   value="Σύνδεση"
-                   onClick={handleClick} /> */}
+                <ButtonIfFactory className={'btn-primary'} title="Σύνδεση" url='/manage' func={handleClick} />
               </div>
             </div>
           </div>
-          {/* </form> */}
         </div>
 
       </div>
