@@ -10,11 +10,7 @@ import Manage from "./manage";
 
 
 const App = (): JSX.Element => {
-  // let history = useHistory();
-  // console.log(history)
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, [history.location.pathname]);
+
 
   return (
     <BrowserRouter>

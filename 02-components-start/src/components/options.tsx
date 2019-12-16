@@ -73,7 +73,6 @@ const Options = (props: {
   return (
     <form id="category" className="form-check" action="">
       <ul className="list-unstyled mb-0">
-        {/*{categories.length !== 0 ? firstRow() : null}*/}
         {renderFilters()}
         {renderSorts()}
       </ul>

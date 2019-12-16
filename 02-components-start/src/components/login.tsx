@@ -50,9 +50,7 @@ const Login = (props: { authorized: boolean, setAuth: any }) => {
   }
 
   return (
-    <div className="container-fluid">
-      <div className="hidden-xs col-sm-4">-</div>
-      <div className="col-xs-12 col-sm-4 light">
+    <div  className="container col-lg-4 offset-lg-4">
         <h3 className="text-center">Σύνδεση Διαχειριστή</h3>
         <div className="alert alert-danger" role="alert"
           hidden></div>
@@ -79,7 +77,7 @@ const Login = (props: { authorized: boolean, setAuth: any }) => {
         </div>
 
       </div>
-    </div>
+
   )
 }
 
